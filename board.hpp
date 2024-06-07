@@ -18,6 +18,8 @@ namespace ariel {
         std::set<Settlement> settlements;
 
         Board();
+        Board(const Board& other);             // Copy constructor
+        Board& operator=(const Board& other);  // Assignment operator
         bool isPossibleRoad(const Road& road) const;
         bool isPossibleSettlement(const Settlement& settlement) const;
     };

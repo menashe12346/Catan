@@ -57,4 +57,21 @@ namespace ariel {
         return settlements.find(settlement) == settlements.end();
     }
 
+     // Copy constructor
+    Board::Board(const Board& other) : tiles(other.tiles), roads(other.roads), settlements(other.settlements) {
+        std::cout << "Board copy constructor called" << std::endl;
+    }
+
+    // Assignment operator
+    Board& Board::operator=(const Board& other) {
+        std::cout << "Board assignment operator called" << std::endl;
+        if (this != &other) {
+            tiles = other.tiles;
+            roads = other.roads;
+            settlements = other.settlements;
+        }
+        return *this;
+    }
+
+
 }

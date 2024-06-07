@@ -19,11 +19,13 @@ namespace ariel {
         set<Tile>nearby_areas;
 
         City();
-        City(string nameOfOwner);
+        City(string nameOfOwner, Tile tile1, Tile tile2, Tile tile3);
 
         bool operator==(const City& other) const;
-        bool operator<(const City& other) const; // Less-than operator
-    };
+        bool operator<(const City& other) const;
+};
+
 }
+
 
 #endif

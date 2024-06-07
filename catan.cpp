@@ -1,25 +1,23 @@
-//326648532
-//menashe7676@gmail.com
-
 #include "catan.hpp"
-
-using namespace std;
+#include <iostream>
 
 namespace ariel {
-    // Assuming player1 starts as written in the demo file
-    Catan::Catan(Player player1, Player player2, Player player3)
-        : player1(player1), player2(player2), player3(player3) {}  // Initializer List Approach
-
-    void Catan::ChooseStartingPlayer(){
-        currentPlayer = player1;
-        cout << "Starting player is " << currentPlayer.name << endl;
+    Catan::Catan(Player& p1, Player& p2, Player& p3) : player1(p1), player2(p2), player3(p3) {
+        std::cout << "Catan game constructor called." << std::endl;
+        std::cout << "Catan game initialized with players: " << player1.name << ", " << player2.name << ", " << player3.name << std::endl;
     }
 
-    Board Catan::getBoard(){
+    void Catan::ChooseStartingPlayer() {
+        std::cout << "ChooseStartingPlayer called." << std::endl;
+        currentPlayer = player1;
+        std::cout << "Starting player is " << currentPlayer.name << std::endl;
+    }
+
+    Board Catan::getBoard() {
         return this->board;
     }
 
-    void Catan::printWinner(){
+    void Catan::printWinner() {
         // Your logic to print the winner
     }
 }

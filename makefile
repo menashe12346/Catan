@@ -1,6 +1,6 @@
 CXX = clang++
 CXXFLAGS = -std=c++17 -Wall -Wextra -Werror
-SRC = board.cpp catan.cpp Demo.cpp player.cpp
+SRC = board.cpp catan.cpp Demo.cpp player.cpp city.cpp road.cpp settlement.cpp tile.cpp
 OBJ = $(SRC:.cpp=.o)
 EXEC = catan
 

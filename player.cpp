@@ -13,11 +13,11 @@ namespace ariel {
 
     Player::Player(string name){
         this->name = name;
-        int wood = 0;
-        int bricks = 0;
-        int wheat = 0;
-        int ore = 0;
-        int wool = 0;
+        this->wood = 0;
+        this->bricks = 0;
+        this->wheat = 0;
+        this->ore = 0;
+        this->wool = 0;
     }
 
     bool Player::isPossibleRoad(Road myRoad){
@@ -58,7 +58,7 @@ namespace ariel {
         // Handle the error (e.g., throw an exception or return early)
         throw std::invalid_argument("Not enough places or placesNum provided");
         }
-        if((this->bricks < 1 || this->wood < 1 || this->wheat < 1 || this->wool < 1) || board.settlements.size()<6){
+        if((this->bricks < 1 || this->wood < 1 || this->wheat < 1 || this->wool < 1) && board.settlements.size()>6){
             cout <<"Insufficient resources" << endl;
             return;
         }
@@ -68,9 +68,12 @@ namespace ariel {
         Settlement settlement(this->name, tile1, tile2, tile3);
         if(isPossibleSettlement(settlement) && board.isPossibleSettlement(settlement)){
             board.settlements.insert(settlement);
+            //when we put the first settlements
             if(board.settlements.size()<6){
-                
-            } else{
+                this->getCards(tile1);
+                this->getCards(tile2);
+                this->getCards(tile3);
+            } else{ 
                 this->bricks--;
                 this->wood--;
                 this->wheat --;
@@ -96,7 +99,7 @@ namespace ariel {
         throw std::invalid_argument("Not enough places or placesNum provided");
         }
 
-        if(this->bricks < 1 || this->wood < 1){
+        if((this->bricks < 1 || this->wood < 1) && board.settlements.size()>6){
             cout <<"Insufficient resources" << endl;
             return;
         }
@@ -107,9 +110,13 @@ namespace ariel {
         if(isPossibleRoad(road) && board.isPossibleRoad(road)){
             this->possibleRoads.erase(road); //remove from possible Roads if exist
             board.roads.insert(road);
+            if(board.roads.size() > 6){
+                this->bricks--;
+                this->wood--;
+            }
 
             // Find the common neighbors(should be 2) between tile1 and tile2
-            for (const auto& neighbor : tile1.nearby_areas) {
+            for (auto& neighbor : tile1.nearby_areas) {
                 /*
                 tile2.nearby_areas.find(neighbor) searches for the neighbor tile in tile2's nearby_areas.
                 If neighbor is found in tile2.nearby_areas, the find function returns an iterator to the element. 
@@ -117,9 +124,8 @@ namespace ariel {
                 end() function returns an iterator to the past-the-end element in the container (i.e to the end of the unordered set)
                 */
                 if (tile2.nearby_areas.find(neighbor) != tile2.nearby_areas.end()) {
-                    Tile intersection = neighbor;
-                    Road road1(this->name, tile1, intersection);
-                    Road road2(this->name, tile2, intersection);
+                    Road road1(this->name, tile1, *neighbor); // Dereference the pointer to get the Tile object
+                    Road road2(this->name, tile2, *neighbor); // Dereference the pointer to get the Tile object
                     // Insert the roads into the board's road set
                     this->possibleRoads.insert(road1);
                     this->possibleRoads.insert(road2);
@@ -128,8 +134,6 @@ namespace ariel {
         }else{
             throw std::runtime_error("cant place road here");
         }
-        this->bricks--;
-        this->wood--;
         this->myRoads.insert(road);
     }
 
@@ -148,17 +152,6 @@ namespace ariel {
         Settlement settlement(this->name, tile1, tile2, tile3);
         if(this->mySettlements.find(settlement) != this->mySettlements.end()){
             board.settlements.erase(settlement);
-            if(board.settlements.size()<6){
-                
-            }
-            
-            Road road1(this->name, tile1, tile2);
-            Road road2(this->name, tile1, tile3);
-            Road road3(this->name, tile2, tile3);
-
-            this->possibleRoads.insert(road1);
-            this->possibleRoads.insert(road2);
-            this->possibleRoads.insert(road3);
         }else{
             throw std::runtime_error("cant place settlement here");
         }
@@ -166,7 +159,8 @@ namespace ariel {
         this->wood--;
         this->wheat --;
         this->wool--;
-        this->myC
+        City city(this->name, tile1, tile2, tile3);
+        this->myCities.insert(city);
     }
 
     // Function to roll two dice

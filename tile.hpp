@@ -1,34 +1,33 @@
 #ifndef TILE_HPP
 #define TILE_HPP
 
-#include <set>
 #include <string>
+#include <set>
 
 namespace ariel {
+    class Tile {
+    public:
+        std::string terrain;
+        int number;
+        std::set<Tile*> nearby_areas;
 
-/*
-enum class Terrain {
-    Mountains,
-    Forest,
-    Pasture_Land,
-    Agricultural_Land,
-    Hills
-};
-*/
+        // Constructors
+        Tile();
+        Tile(const std::string& terrain, int number);
 
-class Tile {
-public:
-    Tile(); // Default constructor
-    Tile(std::string terrain, int number); // Parameterized constructor
-    
-    bool operator==(const Tile& other) const; // Equality operator
-    bool operator<(const Tile& other) const; // Less-than operator
+        // Copy constructor
+        Tile(const Tile& other);
 
-    std::string terrain;
-    int number;
-    std::set<Tile> nearby_areas; 
-};
+        // Assignment operator
+        Tile& operator=(const Tile& other);
 
+        // Destructor
+        ~Tile();
+
+        // Comparison operators
+        bool operator==(const Tile& other) const;
+        bool operator<(const Tile& other) const;
+    };
 }
 
-#endif
+#endif // TILE_HPP

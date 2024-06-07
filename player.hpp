@@ -19,7 +19,7 @@ using namespace std;
 namespace ariel {
     class Player {
     private:
-
+        void getCards(Tile tile);
     public:
         string name;
         set<Settlement> possibleSettlements;
@@ -46,7 +46,6 @@ namespace ariel {
         void trade(Player anotherPlayer, string, string, int, int);
         void buyDevelopmentCard();
         void printPoints();
-        void getCards(Tile tile);
     };
 }
 

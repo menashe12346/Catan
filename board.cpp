@@ -3,8 +3,8 @@
 
 namespace ariel {
 
-    Board::Board() {
-        // Initialize the board with 19 tiles arranged as in the provided image - https://miro.medium.com/v2/resize:fit:590/1*xbHJ-1CO3RMWbXVl5I-Taw.png
+    Board::Board() : tiles(19) {
+        // Initialize the board with 19 tiles
         tiles[0] = {"Mountains", 9};
         tiles[1] = {"Pasture Land", 2};
         tiles[2] = {"Forest", 9};
@@ -25,46 +25,36 @@ namespace ariel {
         tiles[17] = {"Agricultural Land", 6};
         tiles[18] = {"Pasture Land", 11};
 
-        // Initialize neighbors    fix it
-        tiles[0].nearby_areas = {tiles[1], tiles[2], tiles[3]};  
-        tiles[1].nearby_areas = {tiles[0], tiles[3], tiles[4], tiles[5]};
-        tiles[2].nearby_areas = {tiles[0], tiles[3], tiles[6]};
-        tiles[3].nearby_areas = {tiles[0], tiles[1], tiles[2], tiles[4], tiles[5], tiles[6]};
-        tiles[4].nearby_areas = {tiles[1], tiles[3], tiles[5], tiles[7]};
-        tiles[5].nearby_areas = {tiles[1], tiles[3], tiles[4], tiles[7], tiles[8]};
-        tiles[6].nearby_areas = {tiles[2], tiles[3], tiles[9], tiles[10]};
-        tiles[7].nearby_areas = {tiles[4], tiles[5], tiles[8], tiles[11], tiles[12]};
-        tiles[8].nearby_areas = {tiles[5], tiles[7], tiles[12], tiles[13]};
-        tiles[9].nearby_areas = {tiles[6], tiles[10], tiles[14]};
-        tiles[10].nearby_areas = {tiles[6], tiles[9], tiles[14], tiles[15]};
-        tiles[11].nearby_areas = {tiles[7], tiles[12], tiles[16]};
-        tiles[12].nearby_areas = {tiles[7], tiles[8], tiles[11], tiles[13], tiles[16]};
-        tiles[13].nearby_areas = {tiles[8], tiles[12], tiles[16], tiles[17]};
-        tiles[14].nearby_areas = {tiles[9], tiles[10], tiles[15]};
-        tiles[15].nearby_areas = {tiles[10], tiles[14], tiles[18]};
-        tiles[16].nearby_areas = {tiles[11], tiles[12], tiles[13], tiles[17]};
-        tiles[17].nearby_areas = {tiles[13], tiles[16], tiles[18]};
-        tiles[18].nearby_areas = {tiles[15], tiles[17]};
+        // Initialize neighbors using indices
+        tiles[0].nearby_areas = { &tiles[1], &tiles[2], &tiles[3] };
+        tiles[1].nearby_areas = { &tiles[0], &tiles[3], &tiles[4], &tiles[5] };
+        tiles[2].nearby_areas = { &tiles[0], &tiles[3], &tiles[6] };
+        tiles[3].nearby_areas = { &tiles[0], &tiles[1], &tiles[2], &tiles[4], &tiles[5], &tiles[6] };
+        tiles[4].nearby_areas = { &tiles[1], &tiles[3], &tiles[5], &tiles[7] };
+        tiles[5].nearby_areas = { &tiles[1], &tiles[3], &tiles[4], &tiles[7], &tiles[8] };
+        tiles[6].nearby_areas = { &tiles[2], &tiles[3], &tiles[9], &tiles[10] };
+        tiles[7].nearby_areas = { &tiles[4], &tiles[5], &tiles[8], &tiles[11], &tiles[12] };
+        tiles[8].nearby_areas = { &tiles[5], &tiles[7], &tiles[12], &tiles[13] };
+        tiles[9].nearby_areas = { &tiles[6], &tiles[10], &tiles[14] };
+        tiles[10].nearby_areas = { &tiles[6], &tiles[9], &tiles[14], &tiles[15] };
+        tiles[11].nearby_areas = { &tiles[7], &tiles[12], &tiles[16] };
+        tiles[12].nearby_areas = { &tiles[7], &tiles[8], &tiles[11], &tiles[13], &tiles[16] };
+        tiles[13].nearby_areas = { &tiles[8], &tiles[12], &tiles[16], &tiles[17] };
+        tiles[14].nearby_areas = { &tiles[9], &tiles[10], &tiles[15] };
+        tiles[15].nearby_areas = { &tiles[10], &tiles[14], &tiles[18] };
+        tiles[16].nearby_areas = { &tiles[11], &tiles[12], &tiles[13], &tiles[17] };
+        tiles[17].nearby_areas = { &tiles[13], &tiles[16], &tiles[18] };
+        tiles[18].nearby_areas = { &tiles[15], &tiles[17] };
     }
 
-    bool Board::isPossibleRoad(Road road) {
+    bool Board::isPossibleRoad(const Road& road) const {
         // Check if the road is already present in the list of roads
-        for (const auto& existing_road : roads) {
-            if (existing_road == road) {
-                return false;
-            }
-        }
-        return true;
+        return roads.find(road) == roads.end();
     }
 
-    bool Board::isPossibleSettlement(Settlement settlement){
+    bool Board::isPossibleSettlement(const Settlement& settlement) const {
         // Check if the settlement is already present in the list of settlements
-        for (const auto& existing_settlement : settlements) {
-            if (existing_settlement == settlement) {
-                return false;
-            }
-        }
-        return true;
+        return settlements.find(settlement) == settlements.end();
     }
 
 }

@@ -13,6 +13,7 @@ namespace ariel {
     }
 
     bool Road::operator<(const Road& other) const {
-        return true;
-       }
+        return this->nameOfOwner< other.nameOfOwner;
+    }
+
 }

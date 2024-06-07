@@ -16,6 +16,6 @@ namespace ariel {
 
     bool Settlement::operator<(const Settlement& other) const 
     {
-        return true;
+        return this->nameOfOwner< other.nameOfOwner;
     }
 }

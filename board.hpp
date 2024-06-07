@@ -12,19 +12,15 @@
 
 namespace ariel {
     class Board {
-    private:
-
-
     public:
-        vector<Tile> tiles;
-        set<Road> roads;
-        set<Settlement> settlements;
-        bool isPossibleRoad(Road road);
-        bool isPossibleSettlement(Settlement settlement);
+        std::vector<Tile> tiles;
+        std::set<Road> roads;
+        std::set<Settlement> settlements;
+
         Board();
-
+        bool isPossibleRoad(const Road& road) const;
+        bool isPossibleSettlement(const Settlement& settlement) const;
     };
-
 }
 
-#endif
+#endif // BOARD_HPP

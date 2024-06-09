@@ -11,13 +11,10 @@ namespace ariel {
         Player& player1;
         Player& player2;
         Player& player3;
-        Player currentPlayer;
-        Board board;
+        Player &currentPlayer;
 
     public:
         Catan(Player &player1, Player &player2, Player &player3);
-        void ChooseStartingPlayer();
-        Board getBoard();
         void printWinner();
     };
 }

@@ -10,6 +10,8 @@
 #include "city.hpp"
 #include "road.hpp"
 
+using namespace std;
+
 namespace ariel {
     class Board {
     public:

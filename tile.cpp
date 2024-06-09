@@ -10,7 +10,7 @@ namespace ariel {
 
     // Copy constructor
     Tile::Tile(const Tile& other) : terrain(other.terrain), number(other.number) {
-        std::cout << "Tile copy constructor called" << std::endl;
+        //std::cout << "Tile copy constructor called" << std::endl;
         for (auto tile : other.nearby_areas) {
             nearby_areas.insert(tile);
         }

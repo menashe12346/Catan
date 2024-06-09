@@ -1,7 +1,6 @@
 /**
  * Demo file for Ex3.
  *
- */
 #include <iostream>
 #include <stdexcept>
 #include <vector>
@@ -19,9 +18,17 @@ int main()
 
     Catan catan(p1, p2, p3);
 
-    // Starting of the game. Every player places two settlements and two roads.
-    catan.ChooseStartingPlayer();   // should print the name of the starting player, assume it is Amit.
-    Board board = catan.getBoard(); // get the board of the game.
+     cout << "Creating players..." << endl;
+    Player p1("Amit");
+    Player p2("Yossi");
+    Player p3("Dana");
+
+    cout << "Players created successfully." << endl;
+
+    cout << "Initializing Catan game..." << endl;
+    Board board;
+    Catan catan(p1, p2, p3);
+    cout << "Catan game initialized successfully." << endl;
 
     vector<string> places = {"Forest", "Mountains", "Desert"};
     vector<int> placesNum = {3, 8, 10};
@@ -96,3 +103,4 @@ int main()
 
     catan.printWinner(); // Should print None because no player reached 10 points.
 }
+ */

@@ -26,30 +26,35 @@ namespace ariel {
         tiles[18] = {"Pasture Land", 11};
 
         // Initialize neighbors using indices
-        tiles[0].nearby_areas = { &tiles[1], &tiles[2], &tiles[3] };
-        tiles[1].nearby_areas = { &tiles[0], &tiles[3], &tiles[4], &tiles[5] };
-        tiles[2].nearby_areas = { &tiles[0], &tiles[3], &tiles[6] };
-        tiles[3].nearby_areas = { &tiles[0], &tiles[1], &tiles[2], &tiles[4], &tiles[5], &tiles[6] };
-        tiles[4].nearby_areas = { &tiles[1], &tiles[3], &tiles[5], &tiles[7] };
-        tiles[5].nearby_areas = { &tiles[1], &tiles[3], &tiles[4], &tiles[7], &tiles[8] };
-        tiles[6].nearby_areas = { &tiles[2], &tiles[3], &tiles[9], &tiles[10] };
-        tiles[7].nearby_areas = { &tiles[4], &tiles[5], &tiles[8], &tiles[11], &tiles[12] };
-        tiles[8].nearby_areas = { &tiles[5], &tiles[7], &tiles[12], &tiles[13] };
-        tiles[9].nearby_areas = { &tiles[6], &tiles[10], &tiles[14] };
-        tiles[10].nearby_areas = { &tiles[6], &tiles[9], &tiles[14], &tiles[15] };
-        tiles[11].nearby_areas = { &tiles[7], &tiles[12], &tiles[16] };
-        tiles[12].nearby_areas = { &tiles[7], &tiles[8], &tiles[11], &tiles[13], &tiles[16] };
-        tiles[13].nearby_areas = { &tiles[8], &tiles[12], &tiles[16], &tiles[17] };
-        tiles[14].nearby_areas = { &tiles[9], &tiles[10], &tiles[15] };
-        tiles[15].nearby_areas = { &tiles[10], &tiles[14], &tiles[18] };
-        tiles[16].nearby_areas = { &tiles[11], &tiles[12], &tiles[13], &tiles[17] };
-        tiles[17].nearby_areas = { &tiles[13], &tiles[16], &tiles[18] };
-        tiles[18].nearby_areas = { &tiles[15], &tiles[17] };
+        tiles[0].nearby_areas = { &tiles[1], &tiles[3], &tiles[4] };
+        tiles[1].nearby_areas = { &tiles[0], &tiles[2], &tiles[4], &tiles[5] };
+        tiles[2].nearby_areas = { &tiles[1], &tiles[5], &tiles[6] };
+        tiles[3].nearby_areas = { &tiles[0], &tiles[4], &tiles[7], &tiles[8] };
+        tiles[4].nearby_areas = { &tiles[0], &tiles[1], &tiles[3], &tiles[5], &tiles[8], &tiles[9] };
+        tiles[5].nearby_areas = { &tiles[1], &tiles[2], &tiles[4], &tiles[6], &tiles[9], &tiles[10] };
+        tiles[6].nearby_areas = { &tiles[2], &tiles[5], &tiles[10], &tiles[11] };
+        tiles[7].nearby_areas = { &tiles[3], &tiles[8], &tiles[12] };
+        tiles[8].nearby_areas = { &tiles[3], &tiles[4], &tiles[7], &tiles[9], &tiles[12], &tiles[13] };
+        tiles[9].nearby_areas = { &tiles[4], &tiles[5], &tiles[8], &tiles[10], &tiles[13], &tiles[14] };
+        tiles[10].nearby_areas = { &tiles[5], &tiles[6], &tiles[9], &tiles[11], &tiles[14], &tiles[15] };
+        tiles[11].nearby_areas = { &tiles[6], &tiles[10], &tiles[15] };
+        tiles[12].nearby_areas = { &tiles[7], &tiles[8], &tiles[16] };
+        tiles[13].nearby_areas = { &tiles[8], &tiles[9], &tiles[16], &tiles[17] };
+        tiles[14].nearby_areas = { &tiles[9], &tiles[10], &tiles[17], &tiles[18] };
+        tiles[15].nearby_areas = { &tiles[10], &tiles[11], &tiles[18] };
+        tiles[16].nearby_areas = { &tiles[12], &tiles[13], &tiles[17] };
+        tiles[17].nearby_areas = { &tiles[13], &tiles[14], &tiles[16], &tiles[18] };
+        tiles[18].nearby_areas = { &tiles[14], &tiles[15], &tiles[17] };
     }
 
     bool Board::isPossibleRoad(const Road& road) const {
-        // Check if the road is already present in the list of roads
-        return roads.find(road) == roads.end();
+        auto it = roads.find(road);
+        if (it != roads.end()) {
+            // Dereference the iterator to access the Road object and print its nameOfOwner
+            cout << it->nameOfOwner << endl;
+            return false;
+        }
+        return true;
     }
 
     bool Board::isPossibleSettlement(const Settlement& settlement) const {

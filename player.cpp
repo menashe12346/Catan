@@ -39,7 +39,7 @@ namespace ariel {
         return false;
     }
 
-    void Player::getCards(Tile tile) {
+    void Player::getCards(const Tile &tile) {
         if (tile.terrain == "Mountains") {
             this->ore += 1;
         } else if (tile.terrain == "Forest") {
@@ -62,12 +62,20 @@ namespace ariel {
             cout <<"Insufficient resources" << endl;
             return;
         }
+                                cout <<"1" << endl;
+
         Tile tile1 (places[0], placesNum[0]);
         Tile tile2 (places[1], placesNum[1]);
         Tile tile3 (places[2], placesNum[2]);
+                                cout <<"2" << endl;
+
         Settlement settlement(this->name, tile1, tile2, tile3);
-        if(isPossibleSettlement(settlement) && board.isPossibleSettlement(settlement)){
+        if((this->isPossibleSettlement(settlement) || board.settlements.size()<6) && board.isPossibleSettlement(settlement)){
+                                    cout <<"3" << endl;
+
             board.settlements.insert(settlement);
+                        cout <<"4" << endl;
+
             //when we put the first settlements
             if(board.settlements.size()<6){
                 this->getCards(tile1);
@@ -91,6 +99,7 @@ namespace ariel {
             throw std::runtime_error("cant place settlement here");
         }
         this->mySettlements.insert(settlement);
+        cout <<"Settlement placed succesfully" << endl;
     }
 
     void Player::placeRoad(vector<string> places, vector<int> placesNum,Board &board){
@@ -107,7 +116,7 @@ namespace ariel {
         Tile tile1 (places[0], placesNum[0]);
         Tile tile2 (places[1], placesNum[1]);
         Road road(this->name, tile1, tile2);
-        if(isPossibleRoad(road) && board.isPossibleRoad(road)){
+        if((isPossibleRoad(road) || board.settlements.size()<6) && board.isPossibleRoad(road)){
             this->possibleRoads.erase(road); //remove from possible Roads if exist
             board.roads.insert(road);
             if(board.roads.size() > 6){
@@ -135,6 +144,7 @@ namespace ariel {
             throw std::runtime_error("cant place road here");
         }
         this->myRoads.insert(road);
+        cout <<"Road placed succesfully" << endl;
     }
 
     void Player::placeCity(vector<string> places, vector<int> placesNum,Board &board){
@@ -161,21 +171,54 @@ namespace ariel {
         this->wool--;
         City city(this->name, tile1, tile2, tile3);
         this->myCities.insert(city);
+        cout <<"City placed succesfully" << endl;
     }
 
     // Function to roll two dice
-    int Player::rollDice() {
+    void Player::rollDice(Player &p2, Player &p3) {
+        // Seed the random number generator with the current time
+        srand(static_cast<unsigned int>(time(nullptr)));
+        
         // Generate two random numbers between 1 and 6
         int die1 = rand() % 6 + 1;
         int die2 = rand() % 6 + 1;
         int sum = die1 + die2;
 
-        // Return the sum of two dice rolls
-        return sum;
+        for(auto &settlement : this->mySettlements)
+        {
+            for(auto &tile : settlement.nearby_areas)
+            {
+                if(tile.number == sum){
+                    this->getCards(tile);
+                }
+            }
+        }
+
+        for(auto &settlement : p2.mySettlements)
+        {
+            for(auto &tile : settlement.nearby_areas)
+            {
+                if(tile.number == sum){
+                    p2.getCards(tile);
+                }
+            }
+        }
+
+        for(auto &settlement : p3.mySettlements)
+        {
+            for(auto &tile : settlement.nearby_areas)
+            {
+                if(tile.number == sum){
+                    p3.getCards(tile);
+                }
+            }
+        }
+
+        cout << this->name << " rolled the dices and got " << sum <<endl;
     }
 
     void Player::endTurn(){
-
+        
     }
     void Player::trade(Player anotherPlayer, string, string, int, int){
         anotherPlayer.name="";

@@ -24,6 +24,7 @@ namespace ariel {
         bool operator==(const Road& other) const;
         bool operator<(const Road& other) const; // Less-than operator
 
+        friend std::ostream& operator<<(std::ostream& os, const Road& road);
     };
 }
 

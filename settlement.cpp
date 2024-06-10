@@ -11,7 +11,20 @@ namespace ariel {
     }
 
     bool Settlement::operator==(const Settlement& other) const {
-        return this->nameOfOwner == other.nameOfOwner && this->nearby_areas == other.nearby_areas;
+        if (this->nearby_areas.size() != other.nearby_areas.size()) {
+            return false;
+        }
+
+        auto it1 = this->nearby_areas.begin();
+        auto it2 = other.nearby_areas.begin();
+        while (it1 != this->nearby_areas.end() && it2 != other.nearby_areas.end()) {
+            if (!(*it1 == *it2)) {
+                return false;
+            }
+            ++it1;
+            ++it2;
+        }
+        return true;
     }
 
     bool Settlement::operator<(const Settlement& other) const 
@@ -21,11 +34,12 @@ namespace ariel {
 
     // Output operator implementation
     std::ostream& operator<<(std::ostream& os, const Settlement& settlement) {
-        os << "Settlement(name of owner: " << settlement.nameOfOwner << ", nearby_areas: [";
+        os << "Settlement(name of owner: " << settlement.nameOfOwner << "\n";
+        os << "nearby_areas: [\n";
         for (const auto& tile : settlement.nearby_areas) {
-            os << tile << ", ";
+            os << "  " << tile << ",\n";
         }
-        os << "])";
+        os << "])\n";
         return os;
     }
 }

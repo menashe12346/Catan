@@ -23,7 +23,7 @@ int main()
 
     cout << "Placing settlements and roads for player 1..." << endl;
 
-    vector<string> places = {"Forest", "Mountains", "Desert"};
+    vector<string> places = {"Forest", "Mountains", "Hills"};
     vector<int> placesNum = {3, 8, 10};
     p1.placeSettelemnt(places, placesNum, board);
 
@@ -31,30 +31,55 @@ int main()
     placesNum = {3, 8};
     p1.placeRoad(places, placesNum, board);
 
-    places = {"Agricultural Land", "Desert", "Mountains"};
+    places = {"Agricultural Land", "Hills", "Mountains"};
     placesNum = {12, 6, 10};
     p1.placeSettelemnt(places, placesNum, board);
 
-    places = {"Agricultural Land", "Desert"};
+    places = {"Agricultural Land", "Hills"};
     placesNum = {12, 6};
     p1.placeRoad(places, placesNum, board);
 
     cout << "Settlements and roads for player 1 placed successfully." << endl;
 
     cout << "Placing settlements and roads for player 2..." << endl;
+
     places = {"Mountains", "Pasture Land", "Sea"};
     placesNum = {8, 5, 0};
     p2.placeSettelemnt(places, placesNum, board);
+
+    try
+    {
+        p3.placeSettelemnt(places, placesNum, board); // p3 tries to place a settlement in the same location as p2.
+    }
+    catch (const std::exception &e)
+    {
+        cout << e.what() << endl;
+    }
+
     places = {"Mountains", "Pasture Land"};
     placesNum = {8, 5};
     p2.placeRoad(places, placesNum, board);
+
+    places = {"Forest", "Pasture Land", "Hills"};
+    placesNum = {9, 4, 10};
+    p2.placeSettelemnt(places, placesNum, board);
+
+    places = {"Forest", "Pasture Land"};
+    placesNum = {9, 4};
+    p2.placeRoad(places, placesNum, board);
+
     cout << "Settlements and roads for player 2 placed successfully." << endl;
 
     cout << "Placing settlements and roads for player 3..." << endl;
+
     places = {"Mountains", "Pasture Land", "Sea"};
     placesNum = {10, 2, 0};
     p3.placeSettelemnt(places, placesNum, board);
+
+    places = {"Mountains", "Pasture Land"};
+    placesNum = {10, 2};
     p3.placeRoad(places, placesNum, board);
+
     cout << "Settlements and roads for player 3 placed successfully." << endl;
 
     cout << "Player 1's turn actions..." << endl;

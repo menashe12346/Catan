@@ -26,6 +26,7 @@ namespace ariel {
 
         // Comparison operators
         bool operator==(const Tile& other) const;
+        bool operator!=(const Tile& other) const;
         bool operator<(const Tile& other) const;
 
         // Output operator

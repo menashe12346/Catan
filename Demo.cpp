@@ -106,8 +106,7 @@ int main()
     catan.endTurn(p3);  // Ending turn for player 3
     cout << "Player 3's turn actions completed." << endl;
 
-    try
-    {
+    try{
         catan.rollDice(p2); // p2 tries to roll the dice again, but it's not his turn.
     }
     catch (const std::exception &e)
@@ -118,6 +117,10 @@ int main()
     catan.rollDice(p1);                       // Lets say it's print 6. Then, p1 gets bricks from the hills.
     catan.trade(p1, p2, "wood", "brick", 1, 1); // p1 trades 1 wood for 1 brick with p2.
     catan.endTurn(p1);                        // p1 ends his turn.
+
+    catan.rollDice(p2);           // Lets say it's print 9. Then, p3 gets wool from the Pasture Land, p2 gets wool from the Pasture Land.
+    p2.buyDevelopmentCard(); // p2 buys a development card. Lets say it is a bonus points card.
+    catan.endTurn(p2);            // p2 ends his turn.
 
     return 0;
 }

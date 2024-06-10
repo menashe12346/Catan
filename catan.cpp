@@ -12,14 +12,26 @@ namespace ariel {
     void Catan::rollDice(Player& player) {
         if(*currentPlayer == player)
         {
-            // Generate two random numbers between 1 and 6*currentPlayer
+            // Generate two random numbers between 1 and 6
             int die1 = rand() % 6 + 1;
             int die2 = rand() % 6 + 1;
             int sum = die1 + die2;        
             cout << player.name << " rolled the dices and got " << sum << endl;
-            player1.distributeResources(sum);
-            player2.distributeResources(sum);
-            player3.distributeResources(sum);
+            if(sum == 7){
+                player1.discardCards();
+                player2.discardCards();
+                player3.discardCards();
+                string terrain;
+                int num;
+                std::cout << "Enter a resource and a number of a tile you want to put the knight on (e.g., Agricultural Land 4 ): ";
+                std::cin >> terrain >> num;
+                Tile knight(terrain, num);
+                this->knight = &knight;
+            } else{
+                player1.distributeResources(sum, *(this->knight));
+                player2.distributeResources(sum, *(this->knight));
+                player3.distributeResources(sum, *(this->knight));
+            }
         }else{
             cout << "its not " + player.getName() + "'s turn, its now " + (*currentPlayer).getName() + "'s turn" << endl;
         }
@@ -42,13 +54,12 @@ namespace ariel {
     }
 
     void Catan::trade(Player First_Player, Player Second_Player, string resource1, string resource2, int num1, int num2){
-        if((*this->currentPlayer) == First_Player)
+        if((*this->currentPlayer) == First_Player && First_Player.resource_exist(resource1, num1) && Second_Player.resource_exist(resource2, num2))
         {
-            cout<< "123"<<endl;
         First_Player.getCards(resource1, num1*(-1)); //remove this resource
         First_Player.getCards(resource2, num2);
-        Second_Player.getCards(resource2, num1*(-1)); //remove this resource
-        Second_Player.getCards(resource1, num2);
+        Second_Player.getCards(resource2, num2*(-1)); //remove this resource
+        Second_Player.getCards(resource1, num1);
         } else {
             cout << "its not " + First_Player.getName() + "'s turn, its now " + (*currentPlayer).getName() + "'s turn" << endl;
         }

@@ -38,6 +38,10 @@ namespace ariel {
         return terrain == other.terrain && number == other.number;
     }
 
+    bool Tile::operator!=(const Tile& other) const {
+        return !(*this == other);
+    }
+
     // Less-than operator
     bool Tile::operator<(const Tile& other) const {
         if (terrain == other.terrain) {

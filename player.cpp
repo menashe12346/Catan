@@ -13,7 +13,7 @@ namespace ariel {
 
     Player::Player(string name){
         this->name = name;
-        this->wood = 0;
+        this->wood = 10;
         this->bricks = 0;
         this->wheat = 0;
         this->ore = 0;
@@ -44,42 +44,57 @@ namespace ariel {
     }
 
     void Player::getCards(string resource, int amount) {
-        if (resource == "Mountains") {
+        if (resource == "Mountains" || resource == "ore") {
             this->ore += amount;
             if(amount>0) {
-                cout << this->name << " earned " << amount <<"ore" << endl;
+                cout << this->name << " earned " << amount <<" ore" << endl;
             } else if (amount<0){
-                cout << this->name << " lost " << amount <<"ore" << endl;
+                cout << this->name << " lost " << amount <<" ore" << endl;
             }
-        } else if (resource == "Forest") {
+        } else if (resource == "Forest" || resource == "wood") {
             this->wood += amount;
             if(amount>0) {
-                cout << this->name << " earned " << amount <<"wood" << endl;
+                cout << this->name << " earned " << amount <<" wood" << endl;
             } else if (amount<0){
-                cout << this->name << " lost " << amount <<"wood" << endl;
+                cout << this->name << " lost " << amount <<" wood" << endl;
             }
-        } else if (resource == "Agricultural Land") {
+        } else if (resource == "Agricultural Land" || resource == "wheat") {
             this->wheat += amount;
             if(amount>0) {
-                cout << this->name << " earned " << amount <<"wheat" << endl;
+                cout << this->name << " earned " << amount <<" wheat" << endl;
             } else if (amount<0){
-                cout << this->name << " lost " << amount <<"wheat" << endl;
+                cout << this->name << " lost " << amount <<" wheat" << endl;
             }
-        } else if (resource == "Pasture Land"){
+        } else if (resource == "Pasture Land" || resource == "wool"){
             this->wool += amount;
             if(amount>0) {
-                cout << this->name << " earned " << amount <<"wool" << endl;
+                cout << this->name << " earned " << amount <<" wool" << endl;
             } else if (amount<0){
-                cout << this->name << " lost " << amount <<"wool" << endl;
+                cout << this->name << " lost " << amount <<" wool" << endl;
             }
-        }  else if (resource == "Hills") {
+        }  else if (resource == "Hills" || resource == "brick") {
             this->bricks += amount;
             if(amount>0) {
-                cout << this->name << " earned " << amount <<"bricks" << endl;
+                cout << this->name << " earned " << amount <<" brick" << endl;
             } else if (amount<0){
-                cout << this->name << " lost " << amount <<"bricks" << endl;
+                cout << this->name << " lost " << amount <<" bricks" << endl;
             }
         } 
+    }
+
+    bool Player::resource_exist(string resource, int num){
+        if (resource == "Mountains" || resource == "ore") {
+            if(this->ore - num < 0) throw std::runtime_error("Insufficient resources");
+        } else if (resource == "Forest" || resource == "wood") {
+            if(this->wood - num < 0) throw std::runtime_error("Insufficient resources");
+        } else if (resource == "Agricultural Land" || resource == "wheat") {
+            if(this->wheat - num < 0) throw std::runtime_error("Insufficient resources");
+        } else if (resource == "Pasture Land" || resource == "wool"){
+            if(this->wool - num < 0) throw std::runtime_error("Insufficient resources");
+        }  else if (resource == "Hills" || resource == "brick") {
+            if(this->bricks - num < 0) throw std::runtime_error("Insufficient resources");
+        } 
+        return true;
     }
 
     void Player::placeSettelemnt(vector<string> places, vector<int> placesNum,Board &board){
@@ -88,8 +103,7 @@ namespace ariel {
         throw std::invalid_argument("Not enough places or placesNum provided");
         }
         if((this->bricks < 1 || this->wood < 1 || this->wheat < 1 || this->wool < 1) && board.settlements.size()>6){
-            cout <<"Insufficient resources" << endl;
-            return;
+            throw std::runtime_error("Insufficient resources");
         }
 
         Tile tile1 (places[0], placesNum[0]);
@@ -198,22 +212,114 @@ namespace ariel {
     }
 
     // Function to get Resources
-    void Player::distributeResources(int num) {
+    void Player::distributeResources(int num, Tile knight) {
 
         for(auto &settlement : this->mySettlements)
         {
             for(auto &tile : settlement.nearby_areas)
             {
-                if(tile.number == num){
+                if(tile.number == num && tile != knight){
                     this->getCards(tile.terrain, 1);
                 }
             }
         }
     }
 
-    void Player::buyDevelopmentCard(){
-
+    void Player::showCards() const {
+        std::cout << "Cards of " << this->getName() << ": " << "wood" << ": " << wood << ", " << "wool" << ": " << wool << ", " << "bricks" << ": " << bricks << ", " << "ore" << ": " << ore << ", " <<  "wheat" << ": " << wheat << ", " << std::endl;
     }
+
+    void Player::discardCards() 
+    {
+        int totalCards = this->bricks + this->ore + this->wheat + this->wood + this->wool;
+
+        if (totalCards > 7) {
+            std::cout << this->getName() << " has " << totalCards << " cards and needs to discard " << totalCards / 2 << " cards." << std::endl;
+
+            int cardsToDiscard = totalCards / 2;
+            while (cardsToDiscard > 0) {
+                std::string resource;
+                int amount;
+                showCards();
+                cout << cardsToDiscard << " cards needs to be discard" << endl;
+                std::cout << "Enter the resource to discard and the amount (e.g., wood 2): ";
+                std::cin >> resource >> amount;
+
+                if(amount <= cardsToDiscard)
+                {
+                    if (resource_exist(resource, amount)) {
+                        getCards(resource, -amount);
+                        cardsToDiscard -= amount;
+                    } else {
+                        std::cout << "You do not have enough " << resource << " to discard. Try again." << std::endl;
+                    }
+                } else{
+                        std::cout << "too much cards to discard. Try again." << std::endl;
+                }
+            }
+
+            std::cout << "Discard completed." << std::endl;
+        }
+    }
+
+    void Player::playDevelopmentCard(DevelopmentCard& card) 
+    {
+        card.play(*this);
+    }
+
+    void Player::buyDevelopmentCard() {
+        // Cost of a development card
+        std::vector<std::string> cost = DevelopmentCard::getCardCost();
+        
+        // Check if the player has enough resources
+        bool canBuy = true;
+        for (const auto& resource : cost) {
+            if (!resource_exist(resource, 1)) {
+                canBuy = false;
+                break;
+            }
+        }
+
+        if (canBuy) {
+            // Deduct the cost
+            for (const auto& resource : cost) {
+                getCards(resource, -1);
+            }
+
+            // Randomly select a development card type
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<> distr(0, 2); // 3 types of cards
+
+            DevelopmentCard* newCard = nullptr;
+            int cardType = distr(gen);
+
+            if (cardType == 0) {
+                // Randomly select a progress card type
+                std::uniform_int_distribution<> progressDistr(0, 2);
+                int progressType = progressDistr(gen);
+                if (progressType == 0) {
+                    newCard = new MonopolyCard();
+                } else if (progressType == 1) {
+                    newCard = new RoadBuildingCard();
+                } else {
+                    newCard = new YearOfPlentyCard();
+                }
+            } else if (cardType == 1) {
+                newCard = new KnightCard();
+            } else {
+                newCard = new VictoryPointCard();
+            }
+
+            // Add the new development card to the player's collection
+            developmentCards.push_back(newCard);
+
+            std::cout << "Development card bought successfully." << std::endl;
+        } else {
+            std::cout << "Not enough resources to buy a development card." << std::endl;
+        }
+    }
+
     void Player::printPoints(){
 
     }

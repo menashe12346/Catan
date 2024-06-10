@@ -18,4 +18,14 @@ namespace ariel {
     {
         return this->nameOfOwner< other.nameOfOwner;
     }
+
+    // Output operator implementation
+    std::ostream& operator<<(std::ostream& os, const Settlement& settlement) {
+        os << "Settlement(name of owner: " << settlement.nameOfOwner << ", nearby_areas: [";
+        for (const auto& tile : settlement.nearby_areas) {
+            os << tile << ", ";
+        }
+        os << "])";
+        return os;
+    }
 }

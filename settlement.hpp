@@ -23,6 +23,9 @@ namespace ariel {
 
         bool operator==(const Settlement& other) const;
         bool operator<(const Settlement& other) const;
+
+        // Output operator
+        friend std::ostream& operator<<(std::ostream& os, const Settlement& settlement);
 };
 
 }

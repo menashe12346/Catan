@@ -22,6 +22,7 @@ int main()
     cout << "Catan game initialized successfully." << endl;
 
     cout << "Placing settlements and roads for player 1..." << endl;
+
     vector<string> places = {"Forest", "Mountains", "Desert"};
     vector<int> placesNum = {3, 8, 10};
     p1.placeSettelemnt(places, placesNum, board);
@@ -29,12 +30,23 @@ int main()
     places = {"Forest", "Mountains"};
     placesNum = {3, 8};
     p1.placeRoad(places, placesNum, board);
+
+    places = {"Agricultural Land", "Desert", "Mountains"};
+    placesNum = {12, 6, 10};
+    p1.placeSettelemnt(places, placesNum, board);
+
+    places = {"Agricultural Land", "Desert"};
+    placesNum = {12, 6};
+    p1.placeRoad(places, placesNum, board);
+
     cout << "Settlements and roads for player 1 placed successfully." << endl;
 
     cout << "Placing settlements and roads for player 2..." << endl;
     places = {"Mountains", "Pasture Land", "Sea"};
     placesNum = {8, 5, 0};
     p2.placeSettelemnt(places, placesNum, board);
+    places = {"Mountains", "Pasture Land"};
+    placesNum = {8, 5};
     p2.placeRoad(places, placesNum, board);
     cout << "Settlements and roads for player 2 placed successfully." << endl;
 

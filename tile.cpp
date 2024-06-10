@@ -45,4 +45,28 @@ namespace ariel {
         }
         return terrain < other.terrain;
     }
+
+     // Output operator implementation
+    std::ostream& operator<<(std::ostream& os, const Tile& tile) {
+        os << "Tile(terrain: " << tile.terrain << ", number: " << tile.number << ", nearby_areas: [";
+        for (const auto& nearby_tile : tile.nearby_areas) {
+            os << *nearby_tile << ", ";
+        }
+        os << "])";
+        return os;
+    }
+
+    // Define the output operator for std::set<Tile*>
+    std::ostream& operator<<(std::ostream& os, const std::set<ariel::Tile*>& tile_set) {
+    os << "{ ";
+    for (const auto& tile : tile_set) {
+        if (tile != nullptr) {
+            os << *tile << " ";
+        } else {
+            os << "null ";
+        }
+    }
+    os << "}";
+    return os;
+}
 }

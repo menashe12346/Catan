@@ -58,9 +58,32 @@ namespace ariel {
     }
 
     bool Board::isPossibleSettlement(const Settlement& settlement) const {
-        // Check if the settlement is already present in the list of settlements
-        return settlements.find(settlement) == settlements.end();
-    }
+        for (const auto& settlement : settlements) {
+                // Ensure there are at least 3 elements in nearby_areas
+                if (settlement.nearby_areas.size() >= 3) {
+                    auto it = settlement.nearby_areas.begin();
+                    auto tile1 = *it;
+                    ++it;
+                    auto tile2 = *it;
+                    ++it;
+                    auto tile3 = *it;
+
+                    cout << tile1 << endl;
+                    cout << tile2 << endl;
+                    cout << tile3 << endl;
+                } else {
+                    cout << "Not enough nearby areas for settlement: " << settlement << endl;
+                }
+        }
+                            cout << settlement << endl;
+        auto it = settlements.find(settlement);
+        if (it != settlements.end()) {
+            // Dereference the iterator to access the Road object and print its nameOfOwner
+            cout << it->nameOfOwner << endl;
+            return false;
+        }
+        return true;    
+        }
 
      // Copy constructor
     Board::Board(const Board& other) : tiles(other.tiles), roads(other.roads), settlements(other.settlements) {

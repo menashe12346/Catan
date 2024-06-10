@@ -27,6 +27,9 @@ namespace ariel {
         // Comparison operators
         bool operator==(const Tile& other) const;
         bool operator<(const Tile& other) const;
+
+        // Output operator
+        friend std::ostream& operator<<(std::ostream& os, const Tile& tile);
     };
 }
 

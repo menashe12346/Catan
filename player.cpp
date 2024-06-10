@@ -20,6 +20,10 @@ namespace ariel {
         this->wool = 0;
     }
 
+    string Player::getName() const {
+        return name;
+    }
+
     bool Player::isPossibleRoad(Road myRoad){
         for(const auto& PossibleRoad : this->possibleRoads ){
             if(myRoad==PossibleRoad){
@@ -39,27 +43,42 @@ namespace ariel {
         return false;
     }
 
-    void Player::getCards(const Tile &tile) {
-        if (tile.terrain == "Mountains") {
-            this->ore += 1;
-            cout << this->name << " got " << "ore" << endl;
-
-        } else if (tile.terrain == "Forest") {
-            this->wood += 1;
-            cout << this->name << " got " << "wood" << endl;
-
-        } else if (tile.terrain == "Agricultural Land") {
-            this->wheat += 1;
-            cout << this->name << " got " << "wheat" << endl;
-
-        } else if (tile.terrain == "Pasture Land"){
-            this->wool += 1;
-            cout << this->name << " got " << "wool" << endl;
-
-        }  else if (tile.terrain == "Hills") {
-            cout << this->name << " got " << "bricks" << endl;
-
-            this->bricks += 1;
+    void Player::getCards(string resource, int amount) {
+        if (resource == "Mountains") {
+            this->ore += amount;
+            if(amount>0) {
+                cout << this->name << " earned " << amount <<"ore" << endl;
+            } else if (amount<0){
+                cout << this->name << " lost " << amount <<"ore" << endl;
+            }
+        } else if (resource == "Forest") {
+            this->wood += amount;
+            if(amount>0) {
+                cout << this->name << " earned " << amount <<"wood" << endl;
+            } else if (amount<0){
+                cout << this->name << " lost " << amount <<"wood" << endl;
+            }
+        } else if (resource == "Agricultural Land") {
+            this->wheat += amount;
+            if(amount>0) {
+                cout << this->name << " earned " << amount <<"wheat" << endl;
+            } else if (amount<0){
+                cout << this->name << " lost " << amount <<"wheat" << endl;
+            }
+        } else if (resource == "Pasture Land"){
+            this->wool += amount;
+            if(amount>0) {
+                cout << this->name << " earned " << amount <<"wool" << endl;
+            } else if (amount<0){
+                cout << this->name << " lost " << amount <<"wool" << endl;
+            }
+        }  else if (resource == "Hills") {
+            this->bricks += amount;
+            if(amount>0) {
+                cout << this->name << " earned " << amount <<"bricks" << endl;
+            } else if (amount<0){
+                cout << this->name << " lost " << amount <<"bricks" << endl;
+            }
         } 
     }
 
@@ -82,9 +101,9 @@ namespace ariel {
             board.settlements.insert(settlement);
             //when we put the first settlements
             if(board.settlements.size()<=6){
-                this->getCards(tile1);
-                this->getCards(tile2);
-                this->getCards(tile3);
+                this->getCards(tile1.terrain, 1);
+                this->getCards(tile2.terrain, 1);
+                this->getCards(tile3.terrain, 1);
             } else{ 
                 this->bricks--;
                 this->wood--;
@@ -178,60 +197,28 @@ namespace ariel {
         cout <<"City placed succesfully" << endl;
     }
 
-    // Function to roll two dice
-    void Player::rollDice(Player &p2, Player &p3) {
-        // Seed the random number generator with the current time
-        srand(static_cast<unsigned int>(time(nullptr)));
-        
-        // Generate two random numbers between 1 and 6
-        int die1 = rand() % 6 + 1;
-        int die2 = rand() % 6 + 1;
-        int sum = die1 + die2;
-
-        cout << this->name << " rolled the dices and got " << sum <<endl;
+    // Function to get Resources
+    void Player::distributeResources(int num) {
 
         for(auto &settlement : this->mySettlements)
         {
             for(auto &tile : settlement.nearby_areas)
             {
-                if(tile.number == sum){
-                    this->getCards(tile);
-                }
-            }
-        }
-
-        for(auto &settlement : p2.mySettlements)
-        {
-            for(auto &tile : settlement.nearby_areas)
-            {
-                if(tile.number == sum){
-                    p2.getCards(tile);
-                }
-            }
-        }
-
-        for(auto &settlement : p3.mySettlements)
-        {
-            for(auto &tile : settlement.nearby_areas)
-            {
-                if(tile.number == sum){
-                    p3.getCards(tile);
+                if(tile.number == num){
+                    this->getCards(tile.terrain, 1);
                 }
             }
         }
     }
 
-    void Player::endTurn(){
-        
-    }
-    void Player::trade(Player anotherPlayer, string, string, int, int){
-        anotherPlayer.name="";
-
-    }
     void Player::buyDevelopmentCard(){
 
     }
     void Player::printPoints(){
 
+    }
+
+    bool Player::operator==(const Player &player) const{
+        return this->getName() == player.getName();
     }
 }

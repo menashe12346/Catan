@@ -19,7 +19,6 @@ using namespace std;
 namespace ariel {
     class Player {
     private:
-        void getCards(const Tile &tile);
     public:
         string name;
         set<Settlement> possibleSettlements;
@@ -36,16 +35,18 @@ namespace ariel {
 
         Player();
         Player(string name);
+        string getName() const;
         bool isPossibleRoad(Road myRoad);
         bool isPossibleSettlement(Settlement mySettelemnt);
         void placeSettelemnt(vector<string> places, vector<int> placesNum,Board &board);
         void placeRoad(vector<string> places, vector<int> placesNum,Board &board);
         void placeCity(vector<string> places, vector<int> placesNum,Board &board);
-        void rollDice(Player &p2, Player &p3);
-        void endTurn();
-        void trade(Player anotherPlayer, string, string, int, int);
+        void distributeResources(int num);
+        void getCards(string resource, int amount);
         void buyDevelopmentCard();
         void printPoints();
+
+        bool operator==(const Player &player) const;
     };
 }
 

@@ -80,23 +80,44 @@ int main()
     placesNum = {10, 2};
     p3.placeRoad(places, placesNum, board);
 
+    places = {"Agricultural Land", "Pasture Land", "Pasture Land"};
+    placesNum = {4, 5, 11};
+    p3.placeSettelemnt(places, placesNum, board);
+
+    places = {"Agricultural Land", "Pasture Land"};
+    placesNum = {4, 5};
+    p3.placeRoad(places, placesNum, board);
+
     cout << "Settlements and roads for player 3 placed successfully." << endl;
 
     cout << "Player 1's turn actions..." << endl;
-    p1.rollDice(p2, p3);                                    // Simulating dice roll for player 1
+    catan.rollDice(p1);                                    // Simulating dice roll for player 1
     p1.placeRoad({"Forest", "Hills"}, {5, 6}, board); // Placing a road for player 1
-    p1.endTurn();                                     // Ending turn for player 1
+    catan.endTurn(p1);                                     // Ending turn for player 1
     cout << "Player 1's turn actions completed." << endl;
 
     cout << "Player 2's turn actions..." << endl;
-    p2.rollDice(p2, p3); // Simulating dice roll for player 2
-    p2.endTurn();  // Ending turn for player 2
+    catan.rollDice(p2); // Simulating dice roll for player 2
+    catan.endTurn(p2);  // Ending turn for player 2
     cout << "Player 2's turn actions completed." << endl;
 
     cout << "Player 3's turn actions..." << endl;
-    p3.rollDice(p2, p3); // Simulating dice roll for player 3
-    p3.endTurn();  // Ending turn for player 3
+    catan.rollDice(p3); // Simulating dice roll for player 3
+    catan.endTurn(p3);  // Ending turn for player 3
     cout << "Player 3's turn actions completed." << endl;
+
+    try
+    {
+        catan.rollDice(p2); // p2 tries to roll the dice again, but it's not his turn.
+    }
+    catch (const std::exception &e)
+    {
+        cout << e.what() << endl;
+    }
+
+    catan.rollDice(p1);                       // Lets say it's print 6. Then, p1 gets bricks from the hills.
+    catan.trade(p1, p2, "wood", "brick", 1, 1); // p1 trades 1 wood for 1 brick with p2.
+    catan.endTurn(p1);                        // p1 ends his turn.
 
     return 0;
 }

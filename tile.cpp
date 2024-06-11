@@ -45,9 +45,6 @@ namespace ariel {
         return *this;
     }
 
-    // Destructor
-    Tile::~Tile() {}
-
     // Equality operator
     bool Tile::operator==(const Tile& other) const {
         return terrain == other.terrain && number == other.number;

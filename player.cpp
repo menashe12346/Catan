@@ -2,6 +2,7 @@
 //menashe7676@gmail.com
 
 #include "player.hpp"
+#include "developmentCard.hpp"
 
 using namespace std;
 
@@ -270,26 +271,12 @@ namespace ariel {
         cout << this->name << " took "<< count << " " << resource << " from " << other.name << endl;
     }
 
-    void Player::playDevelopmentCard(DevelopmentCard& card) 
+    void Player::playDevelopmentCard(KnightCard& card) 
     {
         card.play(*this);
     }
 
-    void Player::playDevelopmentCard(DevelopmentCard& card, std::vector<Player>& players) 
-    {
-        card.play(*this, players);
-    }
-
-    void Player::playDevelopmentCard(DevelopmentCard& card, vector<string> places1, vector<int> placesNum1, vector<string> places2, vector<int> placesNum2, Board board) 
-    {
-        card.play(*this, places1, placesNum1, places2, placesNum2, board);
-    }
-
-    void Player::playDevelopmentCard(DevelopmentCard& card, string resource1, string resource2) 
-    {
-        card.play(*this, resource1, resource2);
-    }
-
+    
    void Player::buyDevelopmentCard() {
     if (this->ore < 1 || this->wheat < 1 || this->wool < 1) {
         cout << "Insufficient resources" << endl;

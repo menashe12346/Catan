@@ -7,7 +7,6 @@
 #include <random>
 #include <memory>
 #include <string>
-#include "developmentCard.hpp"
 #include "board.hpp"
 #include "tile.hpp"
 #include "settlement.hpp"
@@ -16,9 +15,15 @@
 
 using namespace std;
 
-class DevelopmentCard; // Forward declaration
 
 namespace ariel {
+
+    class DevelopmentCard;
+    class MonopolyCard;
+    class KnightCard;
+    class RoadBuildingCard;
+    class YearOfPlentyCard;
+
     class Player {
     private:
         void showCards() const;
@@ -39,45 +44,6 @@ namespace ariel {
 
         Player();
         Player(string name);
-
-        // Move constructor
-        Player(Player&& other) noexcept
-            : developmentCards(std::move(other.developmentCards)),
-              name(std::move(other.name)),
-              possibleSettlements(std::move(other.possibleSettlements)),
-              possibleRoads(std::move(other.possibleRoads)),
-              mySettlements(std::move(other.mySettlements)),
-              myRoads(std::move(other.myRoads)),
-              myCities(std::move(other.myCities)),
-              wood(other.wood),
-              bricks(other.bricks),
-              wheat(other.wheat),
-              ore(other.ore),
-              wool(other.wool) {}
-
-        // Move assignment operator
-        Player& operator=(Player&& other) noexcept {
-            if (this != &other) {
-                developmentCards = std::move(other.developmentCards);
-                name = std::move(other.name);
-                possibleSettlements = std::move(other.possibleSettlements);
-                possibleRoads = std::move(other.possibleRoads);
-                mySettlements = std::move(other.mySettlements);
-                myRoads = std::move(other.myRoads);
-                myCities = std::move(other.myCities);
-                wood = other.wood;
-                bricks = other.bricks;
-                wheat = other.wheat;
-                ore = other.ore;
-                wool = other.wool;
-            }
-            return *this;
-        }
-
-        // Delete copy constructor and copy assignment operator
-        Player(const Player&) = delete;
-        Player& operator=(const Player&) = delete;
-
         string getName() const;
         bool isPossibleRoad(Road myRoad);
         bool isPossibleSettlement(Settlement mySettelemnt);
@@ -89,10 +55,8 @@ namespace ariel {
         bool resource_exist(string resource, int num);
         void discardCards();
         void takeAllResources(Player &other, string resource);
-        void playDevelopmentCard(DevelopmentCard& card);
-        void playDevelopmentCard(DevelopmentCard& card, std::vector<Player>& players);  // Overloaded for MonopolyCard
-        void playDevelopmentCard(DevelopmentCard& card, vector<string> places1, vector<int> placesNum1, vector<string> places2, vector<int> placesNum2, Board board); // Overloaded for RoadBuildingCard
-        void playDevelopmentCard(DevelopmentCard& card, string resource1, string resource2);
+        void playDevelopmentCard(KnightCard& card);
+
         void buyDevelopmentCard();
         void printPoints();
 

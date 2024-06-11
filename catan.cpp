@@ -1,5 +1,4 @@
 #include "catan.hpp"
-#include <iostream>
 
 namespace ariel {
     Catan::Catan(Player& p1, Player& p2, Player& p3) : player1(p1), player2(p2), player3(p3),currentPlayer(&player1) {
@@ -25,12 +24,11 @@ namespace ariel {
                 int num;
                 std::cout << "Enter a resource and a number of a tile you want to put the knight on (e.g., Agricultural Land 4 ): ";
                 std::cin >> terrain >> num;
-                Tile knight(terrain, num);
-                this->knight = &knight;
+                KnightCard::setKnight(terrain, num);
             } else{
-                player1.distributeResources(sum, *(this->knight));
-                player2.distributeResources(sum, *(this->knight));
-                player3.distributeResources(sum, *(this->knight));
+                player1.distributeResources(sum);
+                player2.distributeResources(sum);
+                player3.distributeResources(sum);
             }
         }else{
             cout << "its not " + player.getName() + "'s turn, its now " + (*currentPlayer).getName() + "'s turn" << endl;

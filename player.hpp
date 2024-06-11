@@ -45,10 +45,12 @@ namespace ariel {
         void placeSettelemnt(vector<string> places, vector<int> placesNum,Board &board);
         void placeRoad(vector<string> places, vector<int> placesNum,Board &board);
         void placeCity(vector<string> places, vector<int> placesNum,Board &board);
-        void distributeResources(int num, Tile knight);
+        void distributeResources(int num);
         void getCards(string resource, int amount);
         bool resource_exist(string resource, int num);
         void discardCards();
+        void takeAllResources(Player &other, string resource);
+        void placeTowRoads();
         void playDevelopmentCard(DevelopmentCard& card);
         void buyDevelopmentCard();
         void printPoints();

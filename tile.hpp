@@ -3,6 +3,9 @@
 
 #include <string>
 #include <set>
+#include <string>
+
+using namespace std;
 
 namespace ariel {
     class Tile {
@@ -12,17 +15,19 @@ namespace ariel {
         std::set<Tile*> nearby_areas;
 
         // Constructors
-        Tile();
         Tile(const std::string& terrain, int number);
 
         // Copy constructor
         Tile(const Tile& other);
 
+        //Getters and Setters
+        string getTerrain() const;
+        int getNumber() const;
+        void setTerrain(const std::string& terrain);
+        void setNumber(int number);
+
         // Assignment operator
         Tile& operator=(const Tile& other);
-
-        // Destructor
-        ~Tile();
 
         // Comparison operators
         bool operator==(const Tile& other) const;

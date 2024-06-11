@@ -2,8 +2,6 @@
 #include <iostream>
 
 namespace ariel {
-    // Default constructor
-    Tile::Tile() : terrain(""), number(0) {}
 
     // Parameterized constructor
     Tile::Tile(const std::string& terrain, int number) : terrain(terrain), number(number) {}
@@ -14,6 +12,22 @@ namespace ariel {
         for (auto tile : other.nearby_areas) {
             nearby_areas.insert(tile);
         }
+    }
+
+    std::string Tile::getTerrain() const {
+        return terrain;
+    }
+
+    int Tile::getNumber() const {
+        return number;
+    }
+
+    void Tile::setTerrain(const std::string& terrain) {
+        this->terrain = terrain;
+    }
+
+    void Tile::setNumber(int number) {
+        this->number = number;
     }
 
     // Assignment operator

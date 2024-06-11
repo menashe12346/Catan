@@ -212,13 +212,13 @@ namespace ariel {
     }
 
     // Function to get Resources
-    void Player::distributeResources(int num, Tile knight) {
+    void Player::distributeResources(int num) {
 
-        for(auto &settlement : this->mySettlements)
+        for(const auto &settlement : this->mySettlements)
         {
-            for(auto &tile : settlement.nearby_areas)
+            for(const auto &tile : settlement.nearby_areas)
             {
-                if(tile.number == num && tile != knight){
+                if(tile.number == num && tile != *(KnightCard::getKnight())){
                     this->getCards(tile.terrain, 1);
                 }
             }
@@ -262,15 +262,31 @@ namespace ariel {
         }
     }
 
+    void Player::takeAllResources(Player &other, string resource){
+        int count;
+        while(other.resource_exist(resource, 1)){
+            other.getCards(resource, -1);
+            this->getCards(resource, 1);
+            count++;
+        }
+        cout << this->name << " took all " << resource << " from " << other.name << endl;
+    }
+
+    void Player::placeTowRoads(){
+        string place1, place2;
+        int number1, number2;
+        
+        std::cout << "Enter two places and their numbers for the first road (e.g., Agricultural Land 4 Pasture Land 5): ";
+        std::cin >> place1 >> number1 >> place2 >> number2;
+        this->placeRoad({place1, place2}, {number1, number2});
+    }
+
     void Player::playDevelopmentCard(DevelopmentCard& card) 
     {
         card.play(*this);
     }
 
     void Player::buyDevelopmentCard() {
-        // Cost of a development card
-        std::vector<std::string> cost = DevelopmentCard::getCardCost();
-        
         // Check if the player has enough resources
         bool canBuy = true;
         for (const auto& resource : cost) {

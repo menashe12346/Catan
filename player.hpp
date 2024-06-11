@@ -8,22 +8,24 @@
 #include <vector>
 #include <set>
 #include <random>
+#include <memory> 
+#include <string>
+#include "developmentCard.hpp"
 #include "board.hpp"
 #include "tile.hpp"
 #include "settlement.hpp"
 #include "city.hpp"
 #include "road.hpp"
-#include "developmentCard.hpp"
-#include <string>
 
 using namespace std;
+
+class DevelopmentCard; // Forward declaration
 
 namespace ariel {
     class Player {
     private:
         void showCards() const;
-        std::vector<DevelopmentCard> developmentCards;
-
+        std::vector<std::unique_ptr<DevelopmentCard>> developmentCards;
     public:
         string name;
         set<Settlement> possibleSettlements;

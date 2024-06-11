@@ -15,6 +15,7 @@ namespace ariel {
         std::set<Tile*> nearby_areas;
 
         // Constructors
+        Tile(); // Default constructor
         Tile(const std::string& terrain, int number);
 
         // Copy constructor

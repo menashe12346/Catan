@@ -2,8 +2,6 @@
 #include <stdexcept>
 #include <vector>
 #include "catan.hpp"
-#include "player.hpp"
-#include "board.hpp"
 
 using namespace std;
 using namespace ariel;
@@ -11,9 +9,9 @@ using namespace ariel;
 int main()
 {
     cout << "Creating players..." << endl;
-    Player p1("Amit");
-    Player p2("Yossi");
-    Player p3("Dana");
+    ariel::Player p1("Amit");
+    ariel::Player p2("Yossi");
+    ariel::Player p3("Dana");
     cout << "Players created successfully." << endl;
 
     cout << "Initializing Catan game..." << endl;

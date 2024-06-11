@@ -3,6 +3,7 @@
 
 namespace ariel {
 
+    Tile::Tile() : terrain(""), number(0) {}
     // Parameterized constructor
     Tile::Tile(const std::string& terrain, int number) : terrain(terrain), number(number) {}
 

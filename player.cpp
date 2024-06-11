@@ -292,42 +292,42 @@ namespace ariel {
         card.play(*this, resource1, resource2);
     }
 
-    void Player::buyDevelopmentCard() {
-        if (this->ore < 1 || this->wheat < 1 || this->wool < 1) {
-            cout << "Insufficient resources" << endl;
-            return;
-        }
-
-        this->ore--;
-        this->wheat--;
-        this->wool--;
-
-        random_device rd;
-        mt19937 gen(rd());
-        uniform_int_distribution<> distr(0, 2);  // 3 types of cards
-
-        std::unique_ptr<DevelopmentCard> newCard;
-        int cardType = distr(gen);
-
-        if (cardType == 0) {
-            uniform_int_distribution<> progressDistr(0, 2);
-            int progressType = progressDistr(gen);
-            if (progressType == 0) {
-                newCard = std::make_unique<MonopolyCard>();
-            } else if (progressType == 1) {
-                newCard = std::make_unique<RoadBuildingCard>();
-            } else {
-                newCard = std::make_unique<YearOfPlentyCard>();
-            }
-        } else if (cardType == 1) {
-            newCard = std::make_unique<KnightCard>();
-        } else {
-            newCard = std::make_unique<VictoryPointCard>();
-        }
-
-        developmentCards.push_back(std::move(newCard));
-        std::cout << "Development card bought successfully." << std::endl;
+   void Player::buyDevelopmentCard() {
+    if (this->ore < 1 || this->wheat < 1 || this->wool < 1) {
+        cout << "Insufficient resources" << endl;
+        return;
     }
+
+    this->ore--;
+    this->wheat--;
+    this->wool--;
+
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> distr(0, 2);  // 3 types of cards
+
+    std::unique_ptr<DevelopmentCard> newCard;
+    int cardType = distr(gen);
+
+    if (cardType == 0) {
+        uniform_int_distribution<> progressDistr(0, 2);
+        int progressType = progressDistr(gen);
+        if (progressType == 0) {
+            newCard = std::make_unique<MonopolyCard>();
+        } else if (progressType == 1) {
+            newCard = std::make_unique<RoadBuildingCard>();
+        } else {
+            newCard = std::make_unique<YearOfPlentyCard>();
+        }
+    } else if (cardType == 1) {
+        newCard = std::make_unique<KnightCard>();
+    } else {
+        newCard = std::make_unique<VictoryPointCard>();
+    }
+
+    developmentCards.push_back(std::move(newCard));
+    std::cout << "Development card bought successfully." << std::endl;
+}
 
     void Player::printPoints(){
 

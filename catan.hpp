@@ -2,6 +2,7 @@
 #define CATAN_H
 
 #include <iostream>
+#include "developmentCard.hpp"
 #include "player.hpp"
 #include "board.hpp"
 #include <ctime>

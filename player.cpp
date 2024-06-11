@@ -3,6 +3,11 @@
 
 #include "player.hpp"
 #include "developmentCard.hpp"
+#include "knightCard.hpp"
+#include "VictoryPointCard.hpp"
+#include "MonopolyCard.hpp"
+#include "RoadBuildingCard.hpp"
+#include "YearOfPlentyCard.hpp"
 
 using namespace std;
 

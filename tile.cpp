@@ -47,12 +47,17 @@ namespace ariel {
 
     // Equality operator
     bool Tile::operator==(const Tile& other) const {
-        return terrain == other.terrain && number == other.number;
+        if (this->terrain.empty() || other.terrain.empty()) {
+            std::cerr << "Null or empty terrain in Tile comparison" << std::endl;
+            return false;
+        }
+        return this->terrain == other.terrain && this->number == other.number;
     }
 
     bool Tile::operator!=(const Tile& other) const {
         return !(*this == other);
     }
+
 
     // Less-than operator
     bool Tile::operator<(const Tile& other) const {

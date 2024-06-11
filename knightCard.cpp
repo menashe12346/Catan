@@ -2,7 +2,8 @@
 
 namespace ariel {
 
-Tile* KnightCard::knight = nullptr;
+    Tile* KnightCard::knight = new Tile("NoTerrain", 0); // Default initialization
+
 
     Tile* KnightCard::getKnight() {
         return knight;

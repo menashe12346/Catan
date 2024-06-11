@@ -13,7 +13,7 @@ namespace ariel {
 
     Player::Player(string name){
         this->name = name;
-        this->wood = 10;
+        this->wood = 0;
         this->bricks = 0;
         this->wheat = 0;
         this->ore = 0;
@@ -185,7 +185,7 @@ namespace ariel {
     }
 
     void Player::placeCity(vector<string> places, vector<int> placesNum,Board &board){
-         if (places.size() < 3 || placesNum.size() < 3) {
+        if (places.size() < 3 || placesNum.size() < 3) {
         // Handle the error (e.g., throw an exception or return early)
         throw std::invalid_argument("Not enough places or placesNum provided");
         }
@@ -272,68 +272,61 @@ namespace ariel {
         cout << this->name << " took all " << resource << " from " << other.name << endl;
     }
 
-    void Player::placeTowRoads(){
-        string place1, place2;
-        int number1, number2;
-        
-        std::cout << "Enter two places and their numbers for the first road (e.g., Agricultural Land 4 Pasture Land 5): ";
-        std::cin >> place1 >> number1 >> place2 >> number2;
-        this->placeRoad({place1, place2}, {number1, number2});
-    }
-
     void Player::playDevelopmentCard(DevelopmentCard& card) 
     {
         card.play(*this);
     }
 
+    void Player::playDevelopmentCard(DevelopmentCard& card, std::vector<Player>& players) 
+    {
+        card.play(*this, players);
+    }
+
+    void Player::playDevelopmentCard(DevelopmentCard& card, vector<string> places1, vector<int> placesNum1, vector<string> places2, vector<int> placesNum2, Board board) 
+    {
+        card.play(*this, places1, placesNum1, places2, placesNum2, board);
+    }
+
+    void Player::playDevelopmentCard(DevelopmentCard& card, string resource1, string resource2) 
+    {
+        card.play(*this, resource1, resource2);
+    }
+
     void Player::buyDevelopmentCard() {
-        // Check if the player has enough resources
-        bool canBuy = true;
-        for (const auto& resource : cost) {
-            if (!resource_exist(resource, 1)) {
-                canBuy = false;
-                break;
-            }
+        if (this->ore < 1 || this->wheat < 1 || this->wool < 1) {
+            cout << "Insufficient resources" << endl;
+            return;
         }
 
-        if (canBuy) {
-            // Deduct the cost
-            for (const auto& resource : cost) {
-                getCards(resource, -1);
-            }
+        this->ore--;
+        this->wheat--;
+        this->wool--;
 
-            // Randomly select a development card type
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_int_distribution<> distr(0, 2); // 3 types of cards
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<> distr(0, 2);  // 3 types of cards
 
-            DevelopmentCard* newCard = nullptr;
-            int cardType = distr(gen);
+        std::unique_ptr<DevelopmentCard> newCard;
+        int cardType = distr(gen);
 
-            if (cardType == 0) {
-                // Randomly select a progress card type
-                std::uniform_int_distribution<> progressDistr(0, 2);
-                int progressType = progressDistr(gen);
-                if (progressType == 0) {
-                    newCard = new MonopolyCard();
-                } else if (progressType == 1) {
-                    newCard = new RoadBuildingCard();
-                } else {
-                    newCard = new YearOfPlentyCard();
-                }
-            } else if (cardType == 1) {
-                newCard = new KnightCard();
+        if (cardType == 0) {
+            uniform_int_distribution<> progressDistr(0, 2);
+            int progressType = progressDistr(gen);
+            if (progressType == 0) {
+                newCard = std::make_unique<MonopolyCard>();
+            } else if (progressType == 1) {
+                newCard = std::make_unique<RoadBuildingCard>();
             } else {
-                newCard = new VictoryPointCard();
+                newCard = std::make_unique<YearOfPlentyCard>();
             }
-
-            // Add the new development card to the player's collection
-            developmentCards.push_back(newCard);
-
-            std::cout << "Development card bought successfully." << std::endl;
+        } else if (cardType == 1) {
+            newCard = std::make_unique<KnightCard>();
         } else {
-            std::cout << "Not enough resources to buy a development card." << std::endl;
+            newCard = std::make_unique<VictoryPointCard>();
         }
+
+        developmentCards.push_back(std::move(newCard));
+        std::cout << "Development card bought successfully." << std::endl;
     }
 
     void Player::printPoints(){

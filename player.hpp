@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <random>
 #include "board.hpp"
 #include "tile.hpp"
 #include "settlement.hpp"
@@ -50,8 +51,10 @@ namespace ariel {
         bool resource_exist(string resource, int num);
         void discardCards();
         void takeAllResources(Player &other, string resource);
-        void placeTowRoads();
         void playDevelopmentCard(DevelopmentCard& card);
+        void playDevelopmentCard(DevelopmentCard& card, std::vector<Player>& players);  // Overloaded for MonopolyCard
+        void playDevelopmentCard(DevelopmentCard& card, vector<string> places1, vector<int> placesNum1, vector<string> places2, vector<int> placesNum2, Board board); // Overloaded for RoadBuildingCard
+        void playDevelopmentCard(DevelopmentCard& card, string resource1, string resource2); 
         void buyDevelopmentCard();
         void printPoints();
 

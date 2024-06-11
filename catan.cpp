@@ -51,7 +51,7 @@ namespace ariel {
         }
     }
 
-    void Catan::trade(Player First_Player, Player Second_Player, string resource1, string resource2, int num1, int num2){
+    void Catan::trade(Player &First_Player, Player &Second_Player, string resource1, string resource2, int num1, int num2){
         if((*this->currentPlayer) == First_Player && First_Player.resource_exist(resource1, num1) && Second_Player.resource_exist(resource2, num2))
         {
         First_Player.getCards(resource1, num1*(-1)); //remove this resource

@@ -8,9 +8,8 @@
 #include "tile.hpp"
 #include "board.hpp"
 
-using namespace std;
-
-class Player; // Forward declaration
+// Forward declaration
+class Player;
 
 namespace ariel {
 
@@ -28,8 +27,8 @@ namespace ariel {
         virtual ~DevelopmentCard() = default; // Virtual destructor for polymorphism
         virtual std::string getType() const = 0; // Abstract method for polymorphism
         virtual void play(Player& player) = 0; // Pure virtual method
-        virtual void play(Player& player, std::vector<std::string>, std::vector<int>, std::vector<std::string>, std::vector<int>, Board&) { }
         virtual void play(Player& player, std::vector<Player>&) { }
+        virtual void play(Player& player, std::vector<std::string>, std::vector<int>, std::vector<std::string>, std::vector<int>, Board&) { }
         virtual void play(Player& player, std::string, std::string) { }
     private:
         DevelopmentCardType type;
@@ -57,21 +56,24 @@ namespace ariel {
     public:
         MonopolyCard();
         std::string getType() const override;
-        void play(Player& player, vector<Player>& players) override;
+        void play(Player& player) override;  // Pure virtual method implementation
+        void play(Player& player, std::vector<Player>& players) override;
     };
 
     class RoadBuildingCard : public DevelopmentCard {
     public:
         RoadBuildingCard();
         std::string getType() const override;
-        void play(Player& player, vector<string> places1, vector<int> placesNum1, vector<string> places2, vector<int> placesNum2, Board& board) override;
+        void play(Player& player) override;  // Pure virtual method implementation
+        void play(Player& player, std::vector<std::string> places1, std::vector<int> placesNum1, std::vector<std::string> places2, std::vector<int> placesNum2, Board& board) override;
     };
 
     class YearOfPlentyCard : public DevelopmentCard {
     public:
         YearOfPlentyCard();
         std::string getType() const override;
-        void play(Player& player, string resource1, string resource2) override;
+        void play(Player& player) override;  // Pure virtual method implementation
+        void play(Player& player, std::string resource1, std::string resource2) override;
     };
 
 }

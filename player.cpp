@@ -1,8 +1,6 @@
 //326648532
 //menashe7676@gmail.com
 
-#include <iostream>
-#include <string>
 #include "player.hpp"
 
 using namespace std;
@@ -263,13 +261,13 @@ namespace ariel {
     }
 
     void Player::takeAllResources(Player &other, string resource){
-        int count;
+        int count = 0;
         while(other.resource_exist(resource, 1)){
             other.getCards(resource, -1);
             this->getCards(resource, 1);
             count++;
         }
-        cout << this->name << " took all " << resource << " from " << other.name << endl;
+        cout << this->name << " took "<< count << " " << resource << " from " << other.name << endl;
     }
 
     void Player::playDevelopmentCard(DevelopmentCard& card) 

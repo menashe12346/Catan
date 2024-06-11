@@ -1,4 +1,5 @@
 #include "developmentCard.hpp"
+#include "player.hpp"  // Include the full definition of Player
 
 namespace ariel {
 
@@ -53,12 +54,19 @@ namespace ariel {
         return "Progress: Monopoly";
     }
 
+    void MonopolyCard::play(Player& player) {
+        std::cout << "Monopoly card played by " << player.getName() << ": Implement your monopoly logic here." << std::endl;
+    }
+
     void MonopolyCard::play(Player& player, std::vector<Player>& players) {
         std::string resource;
         std::cout << "Enter the resource you want to monopolize: ";
         std::cin >> resource;
-        player.takeAllResources(players[0], resource);
-        player.takeAllResources(players[1], resource);
+        for (auto& other_player : players) {
+            if (&other_player != &player) {
+                player.takeAllResources(other_player, resource);
+            }
+        }
         std::cout << "Monopoly card played by " << player.getName() << ": All " << resource << " taken from other players." << std::endl;
     }
 
@@ -68,7 +76,11 @@ namespace ariel {
         return "Progress: RoadBuilding";
     }
 
-    void RoadBuildingCard::play(Player& player, vector<string> places1, vector<int> placesNum1, vector<string> places2, vector<int> placesNum2, Board& board) {
+    void RoadBuildingCard::play(Player& player) {
+        std::cout << "Road Building card played by " << player.getName() << ": Implement your road building logic here." << std::endl;
+    }
+
+    void RoadBuildingCard::play(Player& player, std::vector<std::string> places1, std::vector<int> placesNum1, std::vector<std::string> places2, std::vector<int> placesNum2, Board& board) {
         player.bricks += 2; // because the player placing 2 roads
         player.wood += 2;
         player.placeRoad(places1, placesNum1, board);
@@ -82,7 +94,11 @@ namespace ariel {
         return "Progress: YearOfPlenty";
     }
 
-    void YearOfPlentyCard::play(Player& player, string resource1, string resource2) {
+    void YearOfPlentyCard::play(Player& player) {
+        std::cout << "Year of Plenty card played by " << player.getName() << ": Implement your year of plenty logic here." << std::endl;
+    }
+
+    void YearOfPlentyCard::play(Player& player, std::string resource1, std::string resource2) {
         player.getCards(resource1, 1);
         player.getCards(resource2, 1);
         std::cout << "Year of Plenty card played by " << player.getName() << ": You received " << resource1 << " and " << resource2 << " from the bank." << std::endl;

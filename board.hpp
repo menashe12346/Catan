@@ -18,6 +18,7 @@ namespace ariel {
         std::vector<Tile> tiles;
         std::set<Road> roads;
         std::set<Settlement> settlements;
+        std::set<City> Cities;
 
         Board();
         Board(const Board& other);             // Copy constructor

@@ -11,7 +11,7 @@ class Player;
 
 class MonopolyCard : public DevelopmentCard {
 public:
-    void play(Player& player, std::vector<Player*>& players);
+    void play(Player& player, std::vector<std::reference_wrapper<ariel::Player>> players, const string& resource);
 };
 
 } // namespace ariel

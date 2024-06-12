@@ -7,6 +7,7 @@
 #include <random>
 #include <memory>
 #include <string>
+#include <algorithm>
 #include "board.hpp"
 #include "tile.hpp"
 #include "settlement.hpp"
@@ -27,8 +28,9 @@ namespace ariel {
     class Player {
     private:
         void showCards() const;
-        std::vector<std::unique_ptr<DevelopmentCard>> developmentCards;
     public:
+            std::vector<std::unique_ptr<DevelopmentCard>> developmentCards;
+
         string name;
         set<Settlement> possibleSettlements;
         set<Road> possibleRoads;
@@ -56,7 +58,6 @@ namespace ariel {
         void discardCards();
         void takeAllResources(Player &other, string resource);
         void playDevelopmentCard(KnightCard& card);
-
         void buyDevelopmentCard();
         void printPoints();
 

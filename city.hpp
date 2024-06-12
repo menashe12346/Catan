@@ -16,16 +16,18 @@ namespace ariel {
 
     public:
         string nameOfOwner;
-        set<Tile>nearby_areas;
+        set<Tile> nearby_areas;
 
         City();
         City(string nameOfOwner, Tile tile1, Tile tile2, Tile tile3);
 
         bool operator==(const City& other) const;
         bool operator<(const City& other) const;
-};
+
+        // Output operator
+        friend std::ostream& operator<<(std::ostream& os, const City& city);
+    };
 
 }
-
 
 #endif

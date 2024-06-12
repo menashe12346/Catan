@@ -63,6 +63,102 @@ namespace ariel {
         }
     }
 
+    void Catan::playDevelopmentCard(Player &player, string resource) {
+        if((*this->currentPlayer) == player){
+            // Uses std::find_if to iterate through the developmentCards vector
+            auto it = std::find_if(player.developmentCards.begin(), player.developmentCards.end(), [](const std::unique_ptr<DevelopmentCard>& card) {
+                return dynamic_cast<MonopolyCard*>(card.get()) != nullptr;
+            });
+
+            if (it != player.developmentCards.end()) {
+                MonopolyCard* monopolyCard = dynamic_cast<MonopolyCard*>(it->get());
+                if (monopolyCard) {
+                    std::vector<std::reference_wrapper<ariel::Player>> players = {player1, player2, player3};
+                    monopolyCard->play(player, players, resource);  // Play the MonopolyCard
+                    player.developmentCards.erase(it);  // Remove the card from the vector
+                    std::cout << "Monopoly card played successfully." << std::endl;
+                    this->endTurn(player);  
+                }
+            } else {
+                std::cout << "You do not have a Monopoly card." << std::endl;
+            }
+        } else {
+            cout << "its not " + player.getName() + "'s turn, its now " + (*currentPlayer).getName() + "'s turn" << endl;
+        }
+    }
+
+    void Catan::playDevelopmentCard(Player &player, std::vector<std::string> places1, std::vector<int> placesNum1, std::vector<std::string> places2, std::vector<int> placesNum2, Board& board) {
+        // Check if the current player is the one calling the method
+        if (*this->currentPlayer == player) {
+            // Use std::find_if to iterate through the developmentCards vector
+            auto it = std::find_if(player.developmentCards.begin(), player.developmentCards.end(), [](const std::unique_ptr<DevelopmentCard>& card) {
+                return dynamic_cast<RoadBuildingCard*>(card.get()) != nullptr;
+            });
+
+            if (it != player.developmentCards.end()) {
+                RoadBuildingCard* roadBuildingCard = dynamic_cast<RoadBuildingCard*>(it->get());
+                if (roadBuildingCard) {
+                    roadBuildingCard->play(player, places1, placesNum1, places2, placesNum2, board);  // Play the RoadBuildingCard
+                    player.developmentCards.erase(it);  // Remove the card from the vector
+                    std::cout << "Road Building card played successfully." << std::endl;
+                    this->endTurn(player);  
+                }
+            } else {
+                std::cout << "You do not have a Road Building card." << std::endl;
+            }
+        } else {
+            std::cout << "It's not " + player.getName() + "'s turn, it's now " + this->currentPlayer->getName() + "'s turn" << std::endl;
+        }
+    }
+
+    void Catan::playDevelopmentCard(Player& player, const std::string& resource1, const std::string& resource2) {
+        // Check if the current player is the one calling the method
+        if (*this->currentPlayer == player) {
+            // Use std::find_if to iterate through the developmentCards vector
+            auto it = std::find_if(player.developmentCards.begin(), player.developmentCards.end(), [](const std::unique_ptr<DevelopmentCard>& card) {
+                return dynamic_cast<YearOfPlentyCard*>(card.get()) != nullptr;
+            });
+
+            if (it != player.developmentCards.end()) {
+                YearOfPlentyCard* yearOfPlentyCard = dynamic_cast<YearOfPlentyCard*>(it->get());
+                if (yearOfPlentyCard) {
+                    yearOfPlentyCard->play(player, resource1, resource2);  // Play the YearOfPlentyCard
+                    player.developmentCards.erase(it);  // Remove the card from the vector
+                    std::cout << "Year of Plenty card played successfully." << std::endl;
+                    this->endTurn(player);  
+                }
+            } else {
+                std::cout << "You do not have a Year of Plenty card." << std::endl;
+            }
+        } else {
+            std::cout << "It's not " + player.getName() + "'s turn, it's now " + this->currentPlayer->getName() + "'s turn" << std::endl;
+        }
+    }
+
+    void Catan::playDevelopmentCard(Player& player) {
+        // Check if the current player is the one calling the method
+        if (*this->currentPlayer == player) {
+            // Use std::find_if to iterate through the developmentCards vector
+            auto it = std::find_if(player.developmentCards.begin(), player.developmentCards.end(), [](const std::unique_ptr<DevelopmentCard>& card) {
+                return dynamic_cast<KnightCard*>(card.get()) != nullptr;
+            });
+
+            if (it != player.developmentCards.end()) {
+                KnightCard* knightCard = dynamic_cast<KnightCard*>(it->get());
+                if (knightCard) {
+                    knightCard->play(player);  // Play the KnightCard
+                    player.developmentCards.erase(it);  // Remove the card from the vector
+                    std::cout << "Knight card played successfully." << std::endl;
+                    this->endTurn(player);  
+                }
+            } else {
+                std::cout << "You do not have a Knight card." << std::endl;
+            }
+        } else {
+            std::cout << "It's not " + player.getName() + "'s turn, it's now " + this->currentPlayer->getName() + "'s turn" << std::endl;
+        }
+    }
+
     void Catan::printWinner() {
         // Your logic to print the winner
     }

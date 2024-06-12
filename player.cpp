@@ -19,9 +19,9 @@ namespace ariel {
         this->name = name;
         this->wood = 0;
         this->bricks = 0;
-        this->wheat = 0;
-        this->ore = 0;
-        this->wool = 0;
+        this->wheat = 100;
+        this->ore = 100;
+        this->wool = 100;
     }
 
     string Player::getName() const {
@@ -88,15 +88,15 @@ namespace ariel {
 
     bool Player::resource_exist(string resource, int num){
         if (resource == "Mountains" || resource == "ore") {
-            if(this->ore - num < 0) throw std::runtime_error("Insufficient resources");
+            if(this->ore - num < 0) return false;
         } else if (resource == "Forest" || resource == "wood") {
-            if(this->wood - num < 0) throw std::runtime_error("Insufficient resources");
+            if(this->wood - num < 0) return false;
         } else if (resource == "Agricultural Land" || resource == "wheat") {
-            if(this->wheat - num < 0) throw std::runtime_error("Insufficient resources");
+            if(this->wheat - num < 0) return false;
         } else if (resource == "Pasture Land" || resource == "wool"){
-            if(this->wool - num < 0) throw std::runtime_error("Insufficient resources");
+            if(this->wool - num < 0) return false;
         }  else if (resource == "Hills" || resource == "brick") {
-            if(this->bricks - num < 0) throw std::runtime_error("Insufficient resources");
+            if(this->bricks - num < 0) return false;
         } 
         return true;
     }
@@ -140,7 +140,7 @@ namespace ariel {
             throw std::runtime_error("cant place settlement here");
         }
         this->mySettlements.insert(settlement);
-        cout <<"Settlement placed succesfully: \n" << settlement << endl;
+        cout <<"Settlement placed succesfully: " << endl;
     }
 
     void Player::placeRoad(vector<string> places, vector<int> placesNum,Board &board){
@@ -201,16 +201,17 @@ namespace ariel {
         Tile tile2 (places[1], placesNum[1]);
         Tile tile3 (places[2], placesNum[2]);
         Settlement settlement(this->name, tile1, tile2, tile3);
+        City city(this->name, tile1, tile2, tile3);
         if(this->mySettlements.find(settlement) != this->mySettlements.end()){
             board.settlements.erase(settlement);
+            board.Cities.insert(city);
         }else{
-            throw std::runtime_error("cant place settlement here");
+            throw std::runtime_error("cant place city here");
         }
         this->bricks--;
         this->wood--;
         this->wheat --;
         this->wool--;
-        City city(this->name, tile1, tile2, tile3);
         this->myCities.insert(city);
         cout <<"City placed succesfully" << endl;
     }
@@ -275,49 +276,51 @@ namespace ariel {
         }
         cout << this->name << " took "<< count << " " << resource << " from " << other.name << endl;
     }
-
-    void Player::playDevelopmentCard(KnightCard& card) 
-    {
-        card.play(*this);
-    }
-
     
-   void Player::buyDevelopmentCard() {
-    if (this->ore < 1 || this->wheat < 1 || this->wool < 1) {
-        cout << "Insufficient resources" << endl;
-        return;
-    }
-
-    this->ore--;
-    this->wheat--;
-    this->wool--;
-
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> distr(0, 2);  // 3 types of cards
-
-    std::unique_ptr<DevelopmentCard> newCard;
-    int cardType = distr(gen);
-
-    if (cardType == 0) {
-        uniform_int_distribution<> progressDistr(0, 2);
-        int progressType = progressDistr(gen);
-        if (progressType == 0) {
-            newCard = std::make_unique<MonopolyCard>();
-        } else if (progressType == 1) {
-            newCard = std::make_unique<RoadBuildingCard>();
-        } else {
-            newCard = std::make_unique<YearOfPlentyCard>();
+    void Player::buyDevelopmentCard() {
+        if (this->ore < 1 || this->wheat < 1 || this->wool < 1) {
+            cout << "Insufficient resources" << endl;
+            return;
         }
-    } else if (cardType == 1) {
-        newCard = std::make_unique<KnightCard>();
-    } else {
-        newCard = std::make_unique<VictoryPointCard>();
-    }
 
-    developmentCards.push_back(std::move(newCard));
-    std::cout << "Development card bought successfully." << std::endl;
-}
+        this->ore--;
+        this->wheat--;
+        this->wool--;
+
+        random_device rd;
+        mt19937 gen(rd());
+        //  distribution of 3 progress cards, 3 knight cards, and 4 victory point cards.
+        uniform_int_distribution<> distr(0, 9);  // Total 10 cards
+
+        std::unique_ptr<DevelopmentCard> newCard;
+        int cardType = distr(gen);
+        string type;
+
+        if (cardType < 3) {
+            uniform_int_distribution<> progressDistr(0, 2);
+            int progressType = progressDistr(gen);
+
+            if (progressType == 0) {
+                newCard = std::make_unique<MonopolyCard>();
+                type = "Monopoly Card";
+            } else if (progressType == 1) {
+                newCard = std::make_unique<RoadBuildingCard>();
+                type = "Road Building Card";
+            } else {
+                newCard = std::make_unique<YearOfPlentyCard>();
+                type = "Year of Plenty Card";
+            }
+        } else if (cardType < 6) {
+            newCard = std::make_unique<KnightCard>();
+            type = "Knight Card";
+        } else {
+            newCard = std::make_unique<VictoryPointCard>();
+            type = "Victory Point Card";
+        }
+
+        developmentCards.push_back(std::move(newCard));
+        std::cout << "Development card bought successfully: " << type << std::endl;
+    }
 
     void Player::printPoints(){
 

@@ -117,8 +117,19 @@ int main()
     catan.endTurn(p1);                        // p1 ends his turn.
 
     catan.rollDice(p2);           // Lets say it's print 9. Then, p3 gets wool from the Pasture Land, p2 gets wool from the Pasture Land.
+    for(int i=0;i<30;i++){
     p2.buyDevelopmentCard(); // p2 buys a development card. Lets say it is a bonus points card.
-    catan.endTurn(p2);            // p2 ends his turn.
+    }
+
+    vector<string> places1 = {"Pasture Land", "Hills"};
+    vector<int> placesNum1 = {4, 10};
+    vector<string> places2 = {"Mountains", "sea"};
+    vector<int> placesNum2 = {8, 0};
+    catan.playDevelopmentCard(p2, places1, placesNum1, places2, placesNum2, board); // the turn ends right after
+
+    places = {"Agricultural Land", "Pasture Land", "Pasture Land"};
+    placesNum = {4, 5, 11};
+    p3.placeCity(places, placesNum, board);
 
     return 0;
 }

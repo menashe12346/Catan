@@ -1,13 +1,13 @@
 //326648532
 //menashe7676@gmail.com
 
-#include "player.hpp"
-#include "developmentCard.hpp"
-#include "knightCard.hpp"
-#include "VictoryPointCard.hpp"
-#include "MonopolyCard.hpp"
-#include "RoadBuildingCard.hpp"
-#include "YearOfPlentyCard.hpp"
+#include "../hpp_files/player.hpp"
+#include "../hpp_files/developmentCard.hpp"
+#include "../hpp_files/knightCard.hpp"
+#include "../hpp_files/VictoryPointCard.hpp"
+#include "../hpp_files/MonopolyCard.hpp"
+#include "../hpp_files/RoadBuildingCard.hpp"
+#include "../hpp_files/YearOfPlentyCard.hpp"
 
 using namespace std;
 

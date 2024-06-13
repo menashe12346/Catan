@@ -11,42 +11,6 @@ This project is a digital implementation of the popular board game, Catan, devel
 - Implementation of various development cards (e.g., Monopoly, Road Building, Year of Plenty, Knight, Victory Point)
 - Game mechanics following the Catan rules
 
-## Directory Structure
-
-\```
-project_root/
-├── cpp_files/
-│   ├── MonopolyCard.cpp
-│   ├── RoadBuildingCard.cpp
-│   ├── YearOfPlentyCard.cpp
-│   ├── board.cpp
-│   ├── catan.cpp
-│   ├── city.cpp
-│   ├── knightCard.cpp
-│   ├── player.cpp
-│   ├── road.cpp
-│   ├── settlement.cpp
-│   ├── tile.cpp
-├── hpp_files/
-│   ├── board.hpp
-│   ├── catan.hpp
-│   ├── city.hpp
-│   ├── developmentCard.hpp
-│   ├── player.hpp
-│   ├── road.hpp
-│   ├── settlement.hpp
-│   ├── tile.hpp
-│   ├── MonopolyCard.hpp
-│   ├── RoadBuildingCard.hpp
-│   ├── VictoryPointCard.hpp
-│   ├── YearOfPlentyCard.hpp
-│   ├── knightCard.hpp
-├── demo.cpp
-├── makefile
-├── README.md
-└── Board.png
-\```
-
 ## Setup Instructions
 
 ### Prerequisites

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
-#include "catan.hpp"
+#include "hpp_files/catan.hpp"
 
 using namespace std;
 using namespace ariel;

@@ -1,4 +1,4 @@
-#include "catan.hpp"
+#include "../hpp_files/catan.hpp"
 
 namespace ariel {
 

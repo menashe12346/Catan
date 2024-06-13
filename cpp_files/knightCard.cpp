@@ -1,4 +1,4 @@
-#include "knightCard.hpp"
+#include "../hpp_files/knightCard.hpp"
 
 namespace ariel {
 

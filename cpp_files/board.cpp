@@ -1,4 +1,4 @@
-#include "board.hpp"
+#include "../hpp_files/board.hpp"
 #include <array>
 
 namespace ariel {

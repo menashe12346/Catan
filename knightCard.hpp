@@ -10,11 +10,21 @@ namespace ariel {
 
 class KnightCard : public DevelopmentCard {
 public:
+    /// @brief Play the Knight Card
+    /// @param player The player using the card
     void play(Player& player);
+
+    /// @brief Set the knight tile
+    /// @param name The name of the terrain
+    /// @param number The number on the tile
     static void setKnight(const std::string& name, int number);
-    static  Tile* getKnight();
+
+    /// @brief Get the knight tile
+    /// @return A pointer to the knight tile
+    static Tile* getKnight();
+
 private:
-    static Tile* knight;
+    static Tile* knight; ///< Static pointer to the knight tile
 };
 
 }  // namespace ariel

@@ -3,9 +3,9 @@
 
 namespace ariel {
 
-    Board::Board() : tiles(19) {
-        // Initialize the board with 19 tiles
-        tiles[0] = {"Mountains", 9};
+    Board::Board() : tiles(19) { // Initializer list approach
+        // initializes the tiles vector with 19 elements. Each element is a default-constructed Tile object.
+        tiles[0] = {"Mountains", 9}; // Initialize specific tile with terrain and number
         tiles[1] = {"Pasture Land", 2};
         tiles[2] = {"Forest", 9};
         tiles[3] = {"Agricultural Land", 12};
@@ -26,64 +26,74 @@ namespace ariel {
         tiles[18] = {"Pasture Land", 11};
 
         // Initialize neighbors using indices
-        tiles[0].nearby_areas = { &tiles[1], &tiles[3], &tiles[4] };
-        tiles[1].nearby_areas = { &tiles[0], &tiles[2], &tiles[4], &tiles[5] };
-        tiles[2].nearby_areas = { &tiles[1], &tiles[5], &tiles[6] };
-        tiles[3].nearby_areas = { &tiles[0], &tiles[4], &tiles[7], &tiles[8] };
-        tiles[4].nearby_areas = { &tiles[0], &tiles[1], &tiles[3], &tiles[5], &tiles[8], &tiles[9] };
-        tiles[5].nearby_areas = { &tiles[1], &tiles[2], &tiles[4], &tiles[6], &tiles[9], &tiles[10] };
-        tiles[6].nearby_areas = { &tiles[2], &tiles[5], &tiles[10], &tiles[11] };
-        tiles[7].nearby_areas = { &tiles[3], &tiles[8], &tiles[12] };
-        tiles[8].nearby_areas = { &tiles[3], &tiles[4], &tiles[7], &tiles[9], &tiles[12], &tiles[13] };
-        tiles[9].nearby_areas = { &tiles[4], &tiles[5], &tiles[8], &tiles[10], &tiles[13], &tiles[14] };
-        tiles[10].nearby_areas = { &tiles[5], &tiles[6], &tiles[9], &tiles[11], &tiles[14], &tiles[15] };
-        tiles[11].nearby_areas = { &tiles[6], &tiles[10], &tiles[15] };
-        tiles[12].nearby_areas = { &tiles[7], &tiles[8], &tiles[16] };
-        tiles[13].nearby_areas = { &tiles[8], &tiles[9], &tiles[16], &tiles[17] };
-        tiles[14].nearby_areas = { &tiles[9], &tiles[10], &tiles[17], &tiles[18] };
-        tiles[15].nearby_areas = { &tiles[10], &tiles[11], &tiles[18] };
-        tiles[16].nearby_areas = { &tiles[12], &tiles[13], &tiles[17] };
-        tiles[17].nearby_areas = { &tiles[13], &tiles[14], &tiles[16], &tiles[18] };
-        tiles[18].nearby_areas = { &tiles[14], &tiles[15], &tiles[17] };
+        tiles[0].setNearbyAreas({&tiles[1], &tiles[3], &tiles[4]});
+        tiles[1].setNearbyAreas({&tiles[0], &tiles[2], &tiles[4], &tiles[5]});
+        tiles[2].setNearbyAreas({&tiles[1], &tiles[5], &tiles[6]});
+        tiles[3].setNearbyAreas({&tiles[0], &tiles[4], &tiles[7], &tiles[8]});
+        tiles[4].setNearbyAreas({&tiles[0], &tiles[1], &tiles[3], &tiles[5], &tiles[8], &tiles[9]});
+        tiles[5].setNearbyAreas({&tiles[1], &tiles[2], &tiles[4], &tiles[6], &tiles[9], &tiles[10]});
+        tiles[6].setNearbyAreas({&tiles[2], &tiles[5], &tiles[10], &tiles[11]});
+        tiles[7].setNearbyAreas({&tiles[3], &tiles[8], &tiles[12]});
+        tiles[8].setNearbyAreas({&tiles[3], &tiles[4], &tiles[7], &tiles[9], &tiles[12], &tiles[13]});
+        tiles[9].setNearbyAreas({&tiles[4], &tiles[5], &tiles[8], &tiles[10], &tiles[13], &tiles[14]});
+        tiles[10].setNearbyAreas({&tiles[5], &tiles[6], &tiles[9], &tiles[11], &tiles[14], &tiles[15]});
+        tiles[11].setNearbyAreas({&tiles[6], &tiles[10], &tiles[15]});
+        tiles[12].setNearbyAreas({&tiles[7], &tiles[8], &tiles[16]});
+        tiles[13].setNearbyAreas({&tiles[8], &tiles[9], &tiles[16], &tiles[17]});
+        tiles[14].setNearbyAreas({&tiles[9], &tiles[10], &tiles[17], &tiles[18]});
+        tiles[15].setNearbyAreas({&tiles[10], &tiles[11], &tiles[18]});
+        tiles[16].setNearbyAreas({&tiles[12], &tiles[13], &tiles[17]});
+        tiles[17].setNearbyAreas({&tiles[13], &tiles[14], &tiles[16], &tiles[18]});
+        tiles[18].setNearbyAreas({&tiles[14], &tiles[15], &tiles[17]});
+    }
+
+    std::vector<Tile>& Board::getTiles() {
+        return tiles;  // Return the vector of tiles
+    }
+
+    std::set<Road>& Board::getRoads() {
+        return roads;  // Return the set of roads
+    }
+
+    std::set<Settlement>& Board::getSettlements() {
+        return settlements;  // Return the set of settlements
+    }
+
+    std::set<City>& Board::getCities() {
+        return Cities;  // Return the set of cities
     }
 
     bool Board::isPossibleRoad(const Road& road) const {
-        for (const auto& road_on_Board : roads) {
-            if (road == road_on_Board) 
-            {
-                cout << "road: " << road << endl;
-                cout << "road on board: " << road_on_Board << endl;
-                return false;
-            } 
+        for (const auto& road_on_Board : roads) { // Iterate through all roads on the board
+            if (road == road_on_Board) { // Check if the given road matches any existing road
+                return false; // Road placement is not possible if it already exists
+            }
         }
-        return true;  
+        return true; // Road placement is possible if no matching road is found
     }
 
-    bool Board::isPossibleSettlement(const Settlement& settlement) const {
-        for (const auto& settlement_on_Board : settlements) {
-            if (settlement == settlement_on_Board) 
-            {
-                return false;
-            } 
+    bool Board::isPossibleSettlement(const Settlement& settlement, const City& city) const {
+        for (const auto& settlement_on_Board : settlements) { // Iterate through all settlements on the board
+            if (settlement == settlement_on_Board) { // Check if the given settlement matches any existing settlement
+                return false; // Settlement placement is not possible if it already exists
+            }
         }
-        return true;    
-    }
-
-     // Copy constructor
-    Board::Board(const Board& other) : tiles(other.tiles), roads(other.roads), settlements(other.settlements) {
-        std::cout << "Board copy constructor called" << std::endl;
+        for (const auto& city_on_Board : Cities) { // Iterate through all cities on the board
+            if (city == city_on_Board) { // Check if the given city matches any existing city
+                return false; // Settlement placement is not possible if it matches an existing city
+            }
+        }
+        return true; // Settlement placement is possible if no matching settlement or city is found
     }
 
     // Assignment operator
     Board& Board::operator=(const Board& other) {
         std::cout << "Board assignment operator called" << std::endl;
-        if (this != &other) {
-            tiles = other.tiles;
-            roads = other.roads;
-            settlements = other.settlements;
+        if (this != &other) { // Check for self-assignment
+            tiles = other.tiles; // Copy tiles
+            roads = other.roads; // Copy roads
+            settlements = other.settlements; // Copy settlements
         }
-        return *this;
+        return *this; // Return the updated object
     }
-
-
 }

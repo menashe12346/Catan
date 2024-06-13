@@ -3,16 +3,19 @@
 
 #include <iostream>
 
-
-// Forward declaration
 namespace ariel {
+
+// forward declaration
 class Player;
 
 class DevelopmentCard {
 public:
-    virtual ~DevelopmentCard() = default; // Virtual destructor for polymorphism
+    /// @brief Virtual destructor for polymorphism
+    virtual ~DevelopmentCard() = default;
 };
 
 } // namespace ariel
+
+// Since DevelopmentCard is an abstract base class, it may not have any implementation.
 
 #endif // DEVELOPMENTCARD_HPP

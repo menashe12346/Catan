@@ -36,7 +36,7 @@ namespace ariel {
                 player3.distributeResources(sum);
             }
         } else {
-            cout << "its not " + player.getName() + "'s turn, its now " + (*currentPlayer).getName() + "'s turn" << endl;
+            throw std::runtime_error("its not " + player.getName() + "'s turn, its now " + (*currentPlayer).getName() + "'s turn");
         }
     }
 

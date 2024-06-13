@@ -102,7 +102,14 @@ int main()
 
     catan.rollDice(p2);
     catan.trade(p2, p1, "wheat", "brick", 1, 1); // p1 trades 1 wood for 1 brick with p2.
-    p2.buyDevelopmentCard();
+    try
+    {
+        p2.buyDevelopmentCard(); // p2 tries to buy a development card(he might not have enough resources)
+    }
+    catch (const std::exception &e)
+    {
+        cout << e.what() << endl;
+    }
 
     vector<string> places1 = {"Pasture Land", "Hills"};
     vector<int> placesNum1 = {4, 10};
@@ -117,7 +124,14 @@ int main()
 
     places = {"Agricultural Land", "Pasture Land", "Pasture Land"};
     placesNum = {4, 5, 11};
-    p3.placeCity(places, placesNum, board);
+    try
+    {
+        p3.placeCity(places, placesNum, board); // p2 tries to place a city(he might not have enough resources)
+    }
+    catch (const std::exception &e)
+    {
+        cout << e.what() << endl;
+    }
     catan.endTurn(p3);
 
     p1.printPoints();

@@ -163,8 +163,8 @@ namespace ariel {
 
     void Player::placeSettelemnt(vector<string> places, vector<int> placesNum,Board &board){
         // Place a settlement on the board
-        if (places.size() < 3 || placesNum.size() < 3) {
-            throw std::invalid_argument("Not enough places or placesNum provided");
+        if (places.size() != 3 || placesNum.size() != 3) {
+            throw std::invalid_argument("invalid number of places or placesNum provided");
         }
         if((this->bricks < 1 || this->wood < 1 || this->wheat < 1 || this->wool < 1) && board.getSettlements().size()>6){
             throw std::runtime_error("placing Settlement: Insufficient resources");
@@ -207,12 +207,12 @@ namespace ariel {
 
     void Player::placeRoad(vector<string> places, vector<int> placesNum,Board &board){
         // Place a road on the board
-        if (places.size() < 2 || placesNum.size() < 2) {
-            throw std::invalid_argument("Not enough places or placesNum provided");
+        if (places.size() != 2 || placesNum.size() != 2) {
+            throw std::invalid_argument("invalid number of places or placesNum provided");
         }
 
         if((this->bricks < 1 || this->wood < 1) && board.getSettlements().size()>6){
-            cout <<"placing Road: Insufficient resources" << endl;
+            throw std::runtime_error("placing Road: Insufficient resources");
             return;
         }
 
@@ -246,11 +246,11 @@ namespace ariel {
 
     void Player::placeCity(vector<string> places, vector<int> placesNum,Board &board){
         // Place a city on the board
-        if (places.size() < 3 || placesNum.size() < 3) {
-            throw std::invalid_argument("Not enough places or placesNum provided");
+        if (places.size() != 3 || placesNum.size() != 3) {
+            throw std::invalid_argument("invalid number of places or placesNum provided");
         }
         if(this->ore < 3 || this->wheat < 2){
-            cout <<"placing City: Insufficient resources" << endl;
+            throw std::runtime_error("placing City: Insufficient resources");
             return;
         }
         Tile tile1 (places[0], placesNum[0]);
@@ -349,7 +349,7 @@ namespace ariel {
     void Player::buyDevelopmentCard() {
         // Buy a development card
         if (this->ore < 1 || this->wheat < 1 || this->wool < 1) {
-            cout << "buying Development Card: Insufficient resources" << endl;
+            throw std::runtime_error("buying Development card: Insufficient resources");
             return;
         }
 

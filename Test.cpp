@@ -1,159 +1,86 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
-#include "hpp_files/board.hpp"
-#include "hpp_files/tile.hpp"
 #include "hpp_files/player.hpp"
-#include "hpp_files/city.hpp"
-#include "hpp_files/settlement.hpp"
-#include "hpp_files/road.hpp"
-#include "hpp_files/developmentCard.hpp"
-#include "hpp_files/knightCard.hpp"
-#include "hpp_files/MonopolyCard.hpp"
-#include "hpp_files/RoadBuildingCard.hpp"
-#include "hpp_files/YearOfPlentyCard.hpp"
-#include "hpp_files/VictoryPointCard.hpp"
+#include "hpp_files/catan.hpp"
+#include "hpp_files/board.hpp"
 
 using namespace ariel;
 
-// Test cases for game initialization and setup
+TEST_CASE("Player::placeSettelemnt, placeRoad, placeCity") {
+    Player p1("Amit");
+    Player p2("adam");
+    Player p3("david");
 
-TEST_CASE("Board Initialization") {
-    Board board;
-    board.initialize();
-    CHECK(board.getTileCount() == 19);
+    Catan catan(p1,p2,p3);
+
+    Board &board = catan.getBoard();
+
+    p1.setOre(5);
+    p1.setWheat(5);
+    
+    std::vector<std::string> places = {"Forest", "Mountains", "Hills"};
+    std::vector<int> placesNum = {3, 8, 10};
+    CHECK_NOTHROW(p1.placeSettelemnt(places, placesNum, board));
+    CHECK_NOTHROW(p1.placeCity(places, placesNum, board));
+
+    places = {"Forest", "Mountains", "Hills"};
+    placesNum = {3, 8, 10};
+    CHECK_THROWS_AS(p1.placeSettelemnt(places, placesNum, board), std::runtime_error); // Invalid placement
+
+    places = {"Forest", "Mountains"};
+    placesNum = {3, 8};
+    CHECK_NOTHROW(p1.placeRoad(places, placesNum, board));
 }
 
-TEST_CASE("Tile Initialization") {
-    Tile tile;
-    tile.initialize();
-    CHECK(tile.getResourceType() != ResourceType::NONE);
+TEST_CASE("Catan::rollDice") {
+    Player p1("Amit"), p2("Yossi"), p3("Dana");
+    Catan game(p1, p2, p3);
+
+    CHECK_NOTHROW(game.rollDice(p1));
+    CHECK_NOTHROW(game.endTurn(p1));
+    CHECK_THROWS_AS(game.rollDice(p1), std::runtime_error); // Not p1's turn again
 }
 
-TEST_CASE("Player Initialization") {
-    Player player("Alice");
-    player.initialize();
-    CHECK(player.getResourceCount() == 0);
-    CHECK(player.getVictoryPoints() == 0);
+TEST_CASE("Catan::endTurn") {
+    Player p1("Amit"), p2("Yossi"), p3("Dana");
+    Catan game(p1, p2, p3);
+
+    CHECK_NOTHROW(game.endTurn(p1));
 }
 
-TEST_CASE("City Initialization") {
-    City city;
-    city.initialize();
-    CHECK(city.getLevel() == 1);
+TEST_CASE("Catan::trade") {
+    Player p1("Amit"), p2("Yossi"), p3("Dana");
+    Catan game(p1, p2, p3);
+    p1.setWood(2);
+    p2.setBricks(2);
+
+    CHECK_NOTHROW(game.trade(p1, p2, "wood", "brick", 1, 1));
 }
 
-TEST_CASE("Settlement Initialization") {
-    Settlement settlement;
-    settlement.initialize();
-    CHECK(settlement.getLevel() == 1);
+TEST_CASE("Catan::playDevelopmentCard") {
+    Player p1("Amit"), p2("Yossi"), p3("Dana");
+    Catan game(p1, p2, p3);
+    Board& board = game.getBoard();
+    p2.setOre(30);
+    p2.setWool(30);
+    p2.setWheat(30);
+
+    CHECK_NOTHROW(p1.placeSettelemnt({"Pasture Land", "Hills", "Forest"}, {5, 8, 3}, board));
+
+    for(int i=0;i<30;i++){
+        CHECK_NOTHROW(p2.buyDevelopmentCard(););
+    }
+
+    CHECK_NOTHROW(game.playDevelopmentCard(p2, {"Hills", "Forest"}, {8, 3}, {"Pasture Land", "Hills"}, {5, 8}, board));
+    CHECK_NOTHROW(game.playDevelopmentCard(p2, "wool"));
+    CHECK_NOTHROW(game.playDevelopmentCard(p2, "wood", "ore"));
+    CHECK_NOTHROW(game.playDevelopmentCard(p2));
 }
 
-TEST_CASE("Road Initialization") {
-    Road road;
-    road.initialize();
-    CHECK(road.getLength() == 1);
-}
+TEST_CASE("Catan::printWinner") {
+    Player p1("Amit"), p2("Yossi"), p3("Dana");
+    Catan game(p1, p2, p3);
 
-// Test cases for game mechanics
-
-TEST_CASE("Place Initial Settlements") {
-    Board board;
-    Player player("Alice");
-    board.placeInitialSettlements(player);
-    CHECK(player.getSettlementCount() == 1);
-}
-
-TEST_CASE("Place Road") {
-    Board board;
-    Player player("Alice");
-    board.placeRoad(player, 1, 2);
-    CHECK(player.getRoadCount() == 1);
-}
-
-TEST_CASE("Place Settlement") {
-    Board board;
-    Player player("Alice");
-    board.placeSettlement(player, 1);
-    CHECK(player.getSettlementCount() == 1);
-}
-
-TEST_CASE("Place City") {
-    Board board;
-    Player player("Alice");
-    board.placeCity(player, 1);
-    CHECK(player.getCityCount() == 1);
-}
-
-TEST_CASE("Collect Resources") {
-    Board board;
-    Player player("Alice");
-    board.collectResources(player);
-    CHECK(player.getResourceCount() > 0);
-}
-
-TEST_CASE("Build Settlement") {
-    Player player("Alice");
-    player.buildSettlement();
-    CHECK(player.getSettlementCount() == 1);
-}
-
-TEST_CASE("Build Road") {
-    Player player("Alice");
-    player.buildRoad();
-    CHECK(player.getRoadCount() == 1);
-}
-
-TEST_CASE("Build City") {
-    Player player("Alice");
-    player.buildCity();
-    CHECK(player.getCityCount() == 1);
-}
-
-// Test cases for development cards
-
-TEST_CASE("Draw Development Card") {
-    Player player("Alice");
-    DevelopmentCard card = player.drawDevelopmentCard();
-    CHECK(card.getType() != DevelopmentCardType::NONE);
-}
-
-TEST_CASE("Play Knight Card") {
-    Player player("Alice");
-    KnightCard knightCard;
-    knightCard.play(player);
-    CHECK(player.hasUsedDevelopmentCard(knightCard));
-}
-
-TEST_CASE("Play Monopoly Card") {
-    Player player1("Alice");
-    Player player2("Bob");
-    MonopolyCard monopolyCard;
-    player1.addResource(WHEAT, 5);
-    player2.addResource(WHEAT, 3);
-    monopolyCard.play(player1, WHEAT);
-    CHECK(player1.getResourceCount(WHEAT) == 8);
-    CHECK(player2.getResourceCount(WHEAT) == 0);
-}
-
-TEST_CASE("Play Road Building Card") {
-    Board board;
-    Player player("Alice");
-    RoadBuildingCard roadBuildingCard;
-    roadBuildingCard.play(player, board);
-    CHECK(player.getRoadCount() == 2);
-}
-
-TEST_CASE("Play Year Of Plenty Card") {
-    Player player("Alice");
-    YearOfPlentyCard yearOfPlentyCard;
-    yearOfPlentyCard.play(player, WHEAT, WOOD);
-    CHECK(player.getResourceCount(WHEAT) == 1);
-    CHECK(player.getResourceCount(WOOD) == 1);
-}
-
-TEST_CASE("Play Victory Point Card") {
-    Player player("Alice");
-    VictoryPointCard victoryPointCard;
-    victoryPointCard.play(player);
-    CHECK(player.getVictoryPoints() == 1);
+    // Just check that the function doesn't throw any exceptions
+    CHECK_NOTHROW(game.printWinner());
 }

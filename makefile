@@ -1,18 +1,21 @@
-CXX = clang++
-CXXFLAGS = -std=c++17 -Wall -Werror -g
-SRC = board.cpp catan.cpp Demo.cpp player.cpp city.cpp road.cpp settlement.cpp tile.cpp developmentCard.cpp knightCard.cpp VictoryPointCard.cpp MonopolyCard.cpp RoadBuildingCard.cpp YearOfPlentyCard.cpp
-OBJ = $(SRC:.cpp=.o)
-EXEC = catan
+CXX = g++
+CXXFLAGS = -std=c++14 -Wall -I./hpp_files
 
-all: $(EXEC)
+TARGET = catan
+SOURCES = Demo.cpp cpp_files/MonopolyCard.cpp cpp_files/RoadBuildingCard.cpp \
+          cpp_files/YearOfPlentyCard.cpp cpp_files/board.cpp cpp_files/catan.cpp \
+          cpp_files/city.cpp cpp_files/knightCard.cpp cpp_files/player.cpp \
+          cpp_files/road.cpp cpp_files/settlement.cpp cpp_files/tile.cpp \
 
-$(EXEC): $(OBJ)
-	$(CXX) $(CXXFLAGS) -o $(EXEC) $(OBJ)
+OBJECTS = $(SOURCES:.cpp=.o)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS) $(LDFLAGS)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ) $(EXEC)
-
-.PHONY: all clean
+	rm -f $(TARGET) $(OBJECTS)
